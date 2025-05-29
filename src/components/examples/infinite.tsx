@@ -1,4 +1,4 @@
-import { fruits, type Fruit } from "@/datasets/fruit";
+import type { User } from "@/datasets/users";
 import { Check, XIcon } from "@/svgs";
 import { cn } from "@/utils";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -6,40 +6,26 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { useAutoComplete } from "@wispe/wispe-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-const cache = new Map<number, any[]>();
-
-const generateFruits = (n: number) => {
-  if (cache.has(n)) {
-    return cache.get(n)!;
-  }
-
-  // Generate the dataset
-  const dataset = [];
-  for (let i = 0; i < n; i++) {
-    const item = fruits[i % fruits.length];
-    dataset.push({
-      ...item,
-      name: `${item.label}${i}`,
-      value: `${item.value.toLowerCase()}${i}`,
-      label: `${item.label} ${i}`,
-    });
-  }
-
-  // Cache the result before returning
-  cache.set(n, dataset);
-  return dataset;
-};
+const mockUsers: User[] = Array.from({ length: 80 }, (_, i) => ({
+  id: i + 1,
+  name: `User ${i + 1}`,
+  email: `user${i + 1}@example.com`,
+}));
 
 // Simulate a paged API that accepts a searchTerm
-async function fetchFruitPage(
+async function fetchUserPage(
   limit: number,
   offset = 0,
   searchTerm = ""
-): Promise<{ rows: Fruit[]; nextOffset: number }> {
-  let filtered = generateFruits(10000);
+): Promise<{ rows: User[]; nextOffset: number }> {
+  let filtered = mockUsers;
   if (searchTerm) {
     const term = searchTerm.toLowerCase();
-    filtered = filtered.filter((u) => u.name.toLowerCase().includes(term));
+    filtered = filtered.filter(
+      (u) =>
+        u.name.toLowerCase().includes(term) ||
+        u.email.toLowerCase().includes(term)
+    );
   }
   const start = offset * limit;
   const rows = filtered.slice(start, start + limit);
@@ -51,7 +37,7 @@ async function fetchFruitPage(
 export function Infinite() {
   const [filter, setFilter] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState<Fruit | null>(null);
+  const [activeItem, setActiveItem] = useState<User | null>(null);
 
   const {
     data,
@@ -62,33 +48,33 @@ export function Infinite() {
     isLoading,
     isError,
   } = useInfiniteQuery({
-    queryKey: ["fruits", filter],
-    queryFn: ({ pageParam }) => fetchFruitPage(20, pageParam as number, filter),
+    queryKey: ["users", filter],
+    queryFn: ({ pageParam }) => fetchUserPage(20, pageParam as number, filter),
     initialPageParam: 0,
     getNextPageParam: (last) =>
       last.rows.length === 20 ? last.nextOffset : undefined,
   });
 
-  const allFruits = useMemo(
+  const allUsers = useMemo(
     () => data?.pages.flatMap((d) => d.rows) ?? [],
     [data?.pages]
   );
 
-  const parentRef = useRef<HTMLUListElement>(null);
+  const parentRef = useRef<HTMLUListElement | null>(null);
 
   const rowVirtualizer = useVirtualizer({
-    count: hasNextPage ? allFruits.length + 1 : allFruits.length,
+    count: hasNextPage ? allUsers.length + 1 : allUsers.length,
     getScrollElement: () => parentRef.current,
     getItemKey: useCallback(
       (index: number) => {
-        if (index > allFruits.length - 1) {
+        if (index > allUsers.length - 1) {
           return `loader-${index}`;
         }
-        return allFruits[index].value;
+        return allUsers[index].id;
       },
-      [allFruits]
+      [allUsers]
     ),
-    estimateSize: () => 48,
+    estimateSize: () => 60,
     overscan: 5,
   });
 
@@ -98,14 +84,14 @@ export function Infinite() {
     const lastItem = virtualItems[virtualItems.length - 1];
     if (
       lastItem &&
-      lastItem.index >= allFruits.length - 1 &&
+      lastItem.index >= allUsers.length - 1 &&
       hasNextPage &&
       !isFetchingNextPage
     ) {
       fetchNextPage();
     }
   }, [
-    allFruits.length,
+    allUsers.length,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -121,9 +107,9 @@ export function Infinite() {
     getItemProps,
     getItemState,
     hasSelectedItem,
-    getSelectedItem,
     getClearProps,
-  } = useAutoComplete<Fruit>({
+    getSelectedItem,
+  } = useAutoComplete<User>({
     state: {
       inputValue: filter,
       setInputValue: setFilter,
@@ -132,26 +118,29 @@ export function Infinite() {
       activeItem,
       setActiveItem,
     },
-    items: allFruits,
-    itemToString: (u) => u.label,
-    asyncDebounceMs: 500,
+    items: allUsers,
+    itemToString: (u) => u.name,
+    asyncDebounceMs: 300,
     onFilterAsync: async ({ searchTerm }) => {
       // update the React Query filter
       setFilter(searchTerm);
-      // return allFruits so hook's internal list stays in sync
-      return allFruits;
+      // return allUsers so hook's internal list stays in sync
+      return allUsers;
     },
     // listboxRef: parentRef,
   });
-
+  console.log({
+    hasSelectedItem: hasSelectedItem(),
+    selectedItem: getSelectedItem(),
+  });
   return (
     <div className="relative max-w-md">
-      <label {...getLabelProps()}>Search fruits</label>
+      <label {...getLabelProps()}>Search users</label>
       <div {...getRootProps()} className="relative">
         <input
           {...getInputProps()}
-          placeholder="Type to filter fruits…"
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          placeholder="Type to filter users…"
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
         />
         {isLoading || isFetchingNextPage ? (
           <div
@@ -161,7 +150,7 @@ export function Infinite() {
           >
             <span className="sr-only">Loading…</span>
             <div
-              className="w-5 h-5 border-2 border-gray-300 rounded-full border-t-emerald-500 animate-spin"
+              className="w-5 h-5 border-2 border-slate-300 rounded-full border-t-emerald-500 animate-spin"
               aria-hidden="true"
             />
           </div>
@@ -169,7 +158,7 @@ export function Infinite() {
           <button
             {...getClearProps()}
             type="button"
-            className="absolute text-gray-400 -translate-y-1/2 right-3 top-1/2 hover:text-gray-600 focus:outline-emerald-600"
+            className="absolute text-slate-400 -translate-y-1/2 right-3 top-1/2 hover:text-slate-600 focus:outline-sky-600"
           >
             <XIcon />
           </button>
@@ -189,13 +178,12 @@ export function Infinite() {
             ) : (
               rowVirtualizer.getVirtualItems().map((virtualRow) => {
                 const idx = virtualRow.index;
-                const isLoader = idx > allFruits.length - 1;
-                const key = isLoader ? `loader-${idx}` : allFruits[idx].value;
+                const isLoader = idx > allUsers.length - 1;
+                const key = isLoader ? `loader-${idx}` : allUsers[idx].id;
                 const style = {
                   position: "absolute" as const,
                   top: virtualRow.start,
                   width: "100%",
-                  size: virtualRow.size,
                 };
 
                 if (isLoader) {
@@ -203,48 +191,44 @@ export function Infinite() {
                     <p
                       key={key}
                       style={style}
-                      className="flex items-center justify-center py-3 border-t border-slate-300 bg-slate-700"
+                      className="flex items-center justify-center py-2 mt-3 border-t border-slate-200 bg-slate-700"
                     >
-                      {hasNextPage ? "Loading more…" : "End of fruits"}
+                      {hasNextPage ? "Loading more…" : "End of users"}
                     </p>
                   );
                 }
 
-                const fruit = allFruits[idx];
+                const user = allUsers[idx];
+                console.log({
+                  user,
+                  getItemState: getItemState(user),
+                  isActive: getItemState(user).isActive,
+                  isSelected: getItemState(user).isSelected,
+                });
                 return (
                   <li
-                    key={fruit.value}
-                    {...getItemProps(fruit)}
+                    key={user.id}
+                    {...getItemProps(user)}
                     style={style}
                     className={cn(
-                      "px-4 py-3 cursor-pointer hover:bg-gray-700 bg-slate-900",
-                      getItemState(fruit).isActive && "bg-gray-700"
+                      "px-4 py-2 cursor-pointer hover:bg-slate-600 bg-slate-900",
+                      getItemState(user).isActive && "bg-slate-900"
                     )}
                   >
                     <div>
                       <div className="flex font-medium">
-                        <p className="flex-1">{fruit.label}</p>
-                        {getItemState(fruit).isSelected && (
+                        <p className="flex-1">{user.name}</p>
+                        {getItemState(user).isSelected && (
                           <Check className="text-emerald-500" />
                         )}
                       </div>
+                      <div className="text-sm text-slate-500">{user.email}</div>
                     </div>
                   </li>
                 );
               })
             )}
           </ul>
-        )}
-      </div>
-
-      <div className="p-4 mt-4 rounded-md bg-slate-600">
-        <h3 className="text-sm font-medium text-slate-100">Selected Fruit:</h3>
-        {getSelectedItem() ? (
-          <p className="mt-2 text-sm text-slate-100">
-            {getSelectedItem()?.label}
-          </p>
-        ) : (
-          <p className="mt-2 text-sm text-slate-100">No fruit selected</p>
         )}
       </div>
     </div>
