@@ -1,9 +1,76 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 
+import { Actions } from "@/components/examples/actions";
+import { GroupsExample } from "@/components/examples/groups";
+import { Infinite } from "@/components/examples/infinite";
+import { MultiselectExample } from "@/components/examples/multiselect";
+import { StandardExample } from "@/components/examples/standard";
+import { TabsExample } from "@/components/examples/tabs";
+import { cn } from "@/utils";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { useState } from "react";
 export const Route = createFileRoute("/")({
   component: App,
 });
+
+const queryClient = new QueryClient();
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center pt-30 px-8 pb-36 antialiased">
+        <div className="max-w-4xl">
+          {/* Hero Section */}
+          <header className="flex items-center justify-between">
+            <div className="">
+              <h1 className="text-4xl font-medium">Wispe</h1>
+              <p className="pt-3 text-gray-300 max-w-md text-pretty">
+                A headless autocomplete for React with a Tanstack inspired API
+                and rich interactions.
+              </p>
+            </div>
+            <div className="flex items-center space-x-4 pl-24">
+              <a
+                href="/docs"
+                className="text-gray-300 bg-gray-700 px-4 py-2 rounded-xl shadow-gray-600 shadow-sm  font-medium hover:bg-gray-600 hover:text-gray-200 transition-colors"
+              >
+                Documentation
+              </a>
+
+              {/* GitHub icon link */}
+              <a
+                href="https://github.com/pdevito3/wispe"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-gray-200"
+                aria-label="View on GitHub"
+              >
+                {/* https://iconbuddy.com/zmdi/github */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width={200}
+                  height={200}
+                  viewBox="0 0 432 416"
+                  className="w-5 h-5"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M213.5 0q88.5 0 151 62.5T427 213q0 70-41 125.5T281 416q-14 2-14-11v-58q0-27-15-40q44-5 70.5-27t26.5-77q0-34-22-58q11-26-2-57q-18-5-58 22q-26-7-54-7t-53 7q-18-12-32.5-17.5T107 88h-6q-12 31-2 57q-22 24-22 58q0 55 27 77t70 27q-11 10-13 29q-42 18-62-18q-12-20-33-22q-2 0-4.5.5t-5 3.5t8.5 9q14 7 23 31q1 2 2 4.5t6.5 9.5t13 10.5T130 371t30-2v36q0 13-14 11q-64-22-105-77.5T0 213q0-88 62.5-150.5T213.5 0z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </header>
+
+          {/* Example Tabs Section */}
+          <section className="w-full mt-12">
+            <Tabs />
+          </section>
+        </div>
+      </div>
+    </QueryClientProvider>
+  );
+}
 
 const tabs = [
   {
@@ -23,6 +90,7 @@ const tabs = [
         />
       </svg>
     ),
+    content: <StandardExample />,
   },
   {
     label: "Tabs",
@@ -41,6 +109,7 @@ const tabs = [
         />
       </svg>
     ),
+    content: <TabsExample />,
   },
   {
     label: "Groups",
@@ -61,6 +130,7 @@ const tabs = [
         />
       </svg>
     ),
+    content: <GroupsExample />,
   },
   {
     label: "Async Infinite",
@@ -83,28 +153,7 @@ const tabs = [
         />
       </svg>
     ),
-  },
-  {
-    label: "Actions",
-    icon: (
-      // https://iconbuddy.com/lucide/badge-alert
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={200}
-        height={200}
-        viewBox="0 0 24 24"
-        className="w-4 h-4"
-      >
-        <path
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M3.85 8.62a4 4 0 0 1 4.78-4.77a4 4 0 0 1 6.74 0a4 4 0 0 1 4.78 4.78a4 4 0 0 1 0 6.74a4 4 0 0 1-4.77 4.78a4 4 0 0 1-6.75 0a4 4 0 0 1-4.78-4.77a4 4 0 0 1 0-6.76ZM12 8v4m0 4h.01"
-        />
-      </svg>
-    ),
+    content: <Infinite />,
   },
   {
     label: "Multiselect",
@@ -127,83 +176,65 @@ const tabs = [
         />
       </svg>
     ),
+    content: <MultiselectExample />,
+  },
+  {
+    label: "Actions",
+    icon: (
+      // https://iconbuddy.com/lucide/badge-alert
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={200}
+        height={200}
+        viewBox="0 0 24 24"
+        className="w-4 h-4"
+      >
+        <path
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M3.85 8.62a4 4 0 0 1 4.78-4.77a4 4 0 0 1 6.74 0a4 4 0 0 1 4.78 4.78a4 4 0 0 1 0 6.74a4 4 0 0 1-4.77 4.78a4 4 0 0 1-6.75 0a4 4 0 0 1-4.78-4.77a4 4 0 0 1 0-6.76ZM12 8v4m0 4h.01"
+        />
+      </svg>
+    ),
+    content: <Actions />,
   },
 ];
 
-export default function App() {
+function Tabs() {
   const [activeTab, setActiveTab] = useState<string>(tabs[0].label);
-
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center pt-30 px-8 pb-36 antialiased">
-      <div className="max-w-4xl">
-        {/* Hero Section */}
-        <header className="flex items-center justify-between">
-          <div className="">
-            <h1 className="text-4xl font-medium">Wispe</h1>
-            <p className="pt-3 text-gray-300 max-w-md text-pretty">
-              A headless autocomplete for React with a Tanstack inspired API and
-              rich interactions.
-            </p>
-          </div>
-          <div className="flex items-center space-x-4 pl-24">
-            <a
-              href="/docs"
-              className="text-gray-300 bg-gray-700 px-4 py-2 rounded-xl shadow-gray-600 shadow-sm  font-medium hover:bg-gray-600 hover:text-gray-200 transition-colors"
-            >
-              Documentation
-            </a>
+    <>
+      <nav className="flex space-x-2 border-b border-gray-700">
+        {tabs.map(({ label, icon }) => (
+          <button
+            key={label}
+            onClick={() => setActiveTab(label)}
+            className={cn(
+              "relative flex px-4 py-2 -mb-px text-sm transition focus-visible:outline-2 select-none",
+              activeTab === label ? "text-emerald-500" : ""
+            )}
+          >
+            {icon && <span className="pr-1">{icon}</span>}
+            <span>{label}</span>
+            {label === activeTab && (
+              <motion.div
+                layoutId="active-underline"
+                className="absolute left-0 right-0 bottom-0 h-0.5 bg-emerald-500"
+                transition={{ type: "spring", bounce: 0.1, duration: 0.4 }}
+              />
+            )}
+          </button>
+        ))}
+      </nav>
 
-            {/* GitHub icon link */}
-            <a
-              href="https://github.com/pdevito3/wispe"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-300 hover:text-gray-200"
-              aria-label="View on GitHub"
-            >
-              {/* https://iconbuddy.com/zmdi/github */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={200}
-                height={200}
-                viewBox="0 0 432 416"
-                className="w-5 h-5"
-              >
-                <path
-                  fill="currentColor"
-                  d="M213.5 0q88.5 0 151 62.5T427 213q0 70-41 125.5T281 416q-14 2-14-11v-58q0-27-15-40q44-5 70.5-27t26.5-77q0-34-22-58q11-26-2-57q-18-5-58 22q-26-7-54-7t-53 7q-18-12-32.5-17.5T107 88h-6q-12 31-2 57q-22 24-22 58q0 55 27 77t70 27q-11 10-13 29q-42 18-62-18q-12-20-33-22q-2 0-4.5.5t-5 3.5t8.5 9q14 7 23 31q1 2 2 4.5t6.5 9.5t13 10.5T130 371t30-2v36q0 13-14 11q-64-22-105-77.5T0 213q0-88 62.5-150.5T213.5 0z"
-                />
-              </svg>
-            </a>
-          </div>
-        </header>
-
-        {/* Example Tabs Section */}
-        <section className="w-full mt-12">
-          <nav className="flex space-x-2 border-b border-gray-700">
-            {tabs.map(({ label, icon }) => (
-              <button
-                key={label}
-                onClick={() => setActiveTab(label)}
-                className={`px-4 py-2 -mb-px flex items-center space-x-1 focus:outline-none text-sm ${
-                  activeTab === label
-                    ? "border-b-2 border-blue-500 text-blue-400 font-semibold"
-                    : "text-gray-400 hover:text-gray-200"
-                }`}
-              >
-                {icon && <span className="pr-1">{icon}</span>}
-                <span>{label}</span>
-              </button>
-            ))}
-          </nav>
-          <div className="mt-6 p-6 bg-gray-800 rounded-lg h-64 flex items-center justify-center">
-            {/* Placeholder for component example */}
-            <span className="text-gray-500 italic">
-              [Component example for “{activeTab}”]
-            </span>
-          </div>
-        </section>
+      <div className="mt-6 p-6 bg-gray-800 rounded-lg h-96 flex items-center justify-center">
+        <div className="-mt-30 w-full max-w-sm">
+          {tabs.find((tab) => tab.label === activeTab)?.content}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
