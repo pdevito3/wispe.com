@@ -8,18 +8,58 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as DocsDocsLayoutImport } from './routes/docs/_docs-layout'
+import { Route as DocsDocsLayoutIndexImport } from './routes/docs/_docs-layout/index'
+import { Route as DocsDocsLayoutBackgroundImport } from './routes/docs/_docs-layout/background'
+import { Route as DocsDocsLayoutAutocompleteGuideImport } from './routes/docs/_docs-layout/autocomplete-guide'
+
+// Create Virtual Routes
+
+const DocsImport = createFileRoute('/docs')()
 
 // Create/Update Routes
+
+const DocsRoute = DocsImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const DocsDocsLayoutRoute = DocsDocsLayoutImport.update({
+  id: '/_docs-layout',
+  getParentRoute: () => DocsRoute,
+} as any)
+
+const DocsDocsLayoutIndexRoute = DocsDocsLayoutIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DocsDocsLayoutRoute,
+} as any)
+
+const DocsDocsLayoutBackgroundRoute = DocsDocsLayoutBackgroundImport.update({
+  id: '/background',
+  path: '/background',
+  getParentRoute: () => DocsDocsLayoutRoute,
+} as any)
+
+const DocsDocsLayoutAutocompleteGuideRoute =
+  DocsDocsLayoutAutocompleteGuideImport.update({
+    id: '/autocomplete-guide',
+    path: '/autocomplete-guide',
+    getParentRoute: () => DocsDocsLayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -32,39 +72,126 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsImport
+      parentRoute: typeof rootRoute
+    }
+    '/docs/_docs-layout': {
+      id: '/docs/_docs-layout'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsDocsLayoutImport
+      parentRoute: typeof DocsRoute
+    }
+    '/docs/_docs-layout/autocomplete-guide': {
+      id: '/docs/_docs-layout/autocomplete-guide'
+      path: '/autocomplete-guide'
+      fullPath: '/docs/autocomplete-guide'
+      preLoaderRoute: typeof DocsDocsLayoutAutocompleteGuideImport
+      parentRoute: typeof DocsDocsLayoutImport
+    }
+    '/docs/_docs-layout/background': {
+      id: '/docs/_docs-layout/background'
+      path: '/background'
+      fullPath: '/docs/background'
+      preLoaderRoute: typeof DocsDocsLayoutBackgroundImport
+      parentRoute: typeof DocsDocsLayoutImport
+    }
+    '/docs/_docs-layout/': {
+      id: '/docs/_docs-layout/'
+      path: '/'
+      fullPath: '/docs/'
+      preLoaderRoute: typeof DocsDocsLayoutIndexImport
+      parentRoute: typeof DocsDocsLayoutImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface DocsDocsLayoutRouteChildren {
+  DocsDocsLayoutAutocompleteGuideRoute: typeof DocsDocsLayoutAutocompleteGuideRoute
+  DocsDocsLayoutBackgroundRoute: typeof DocsDocsLayoutBackgroundRoute
+  DocsDocsLayoutIndexRoute: typeof DocsDocsLayoutIndexRoute
+}
+
+const DocsDocsLayoutRouteChildren: DocsDocsLayoutRouteChildren = {
+  DocsDocsLayoutAutocompleteGuideRoute: DocsDocsLayoutAutocompleteGuideRoute,
+  DocsDocsLayoutBackgroundRoute: DocsDocsLayoutBackgroundRoute,
+  DocsDocsLayoutIndexRoute: DocsDocsLayoutIndexRoute,
+}
+
+const DocsDocsLayoutRouteWithChildren = DocsDocsLayoutRoute._addFileChildren(
+  DocsDocsLayoutRouteChildren,
+)
+
+interface DocsRouteChildren {
+  DocsDocsLayoutRoute: typeof DocsDocsLayoutRouteWithChildren
+}
+
+const DocsRouteChildren: DocsRouteChildren = {
+  DocsDocsLayoutRoute: DocsDocsLayoutRouteWithChildren,
+}
+
+const DocsRouteWithChildren = DocsRoute._addFileChildren(DocsRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/docs': typeof DocsDocsLayoutRouteWithChildren
+  '/docs/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
+  '/docs/background': typeof DocsDocsLayoutBackgroundRoute
+  '/docs/': typeof DocsDocsLayoutIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/docs': typeof DocsDocsLayoutIndexRoute
+  '/docs/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
+  '/docs/background': typeof DocsDocsLayoutBackgroundRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/docs': typeof DocsRouteWithChildren
+  '/docs/_docs-layout': typeof DocsDocsLayoutRouteWithChildren
+  '/docs/_docs-layout/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
+  '/docs/_docs-layout/background': typeof DocsDocsLayoutBackgroundRoute
+  '/docs/_docs-layout/': typeof DocsDocsLayoutIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/docs'
+    | '/docs/autocomplete-guide'
+    | '/docs/background'
+    | '/docs/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/docs' | '/docs/autocomplete-guide' | '/docs/background'
+  id:
+    | '__root__'
+    | '/'
+    | '/docs'
+    | '/docs/_docs-layout'
+    | '/docs/_docs-layout/autocomplete-guide'
+    | '/docs/_docs-layout/background'
+    | '/docs/_docs-layout/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DocsRoute: typeof DocsRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DocsRoute: DocsRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +204,39 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/docs"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/docs": {
+      "filePath": "docs",
+      "children": [
+        "/docs/_docs-layout"
+      ]
+    },
+    "/docs/_docs-layout": {
+      "filePath": "docs/_docs-layout.tsx",
+      "parent": "/docs",
+      "children": [
+        "/docs/_docs-layout/autocomplete-guide",
+        "/docs/_docs-layout/background",
+        "/docs/_docs-layout/"
+      ]
+    },
+    "/docs/_docs-layout/autocomplete-guide": {
+      "filePath": "docs/_docs-layout/autocomplete-guide.tsx",
+      "parent": "/docs/_docs-layout"
+    },
+    "/docs/_docs-layout/background": {
+      "filePath": "docs/_docs-layout/background.tsx",
+      "parent": "/docs/_docs-layout"
+    },
+    "/docs/_docs-layout/": {
+      "filePath": "docs/_docs-layout/index.tsx",
+      "parent": "/docs/_docs-layout"
     }
   }
 }

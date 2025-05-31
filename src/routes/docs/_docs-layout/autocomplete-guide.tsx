@@ -1,14 +1,15 @@
 import { DocsMdxPage } from "@/components/mdx/docs-mdx-page";
 import { createFileRoute } from "@tanstack/react-router";
-import Markdown, { headings } from "./-how-it-works.mdx";
+// import { headTextBuilder } from "@/utils";
+import Markdown, { headings } from "./-autocomplete-guide.mdx";
 
-export const Route = createFileRoute("/docs/_docs-layout/how-it-works")({
+export const Route = createFileRoute("/docs/_docs-layout/autocomplete-guide")({
   component: RouteComponent,
   meta: () => [
-    // { title: "Sustainable Use License" },
+    // { title: headTextBuilder({ pageHead: "Docs" }) },
     // {
     //   name: "description",
-    //   content: "Documentation for the Peak LIMS Sustainable Use License",
+    //   content: "Documentation for Peak LIMS",
     // },
   ],
 });

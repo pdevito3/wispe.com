@@ -129,10 +129,10 @@ export function Infinite() {
     },
     // listboxRef: parentRef,
   });
-  console.log({
-    hasSelectedItem: hasSelectedItem(),
-    selectedItem: getSelectedItem(),
-  });
+  // console.log({
+  //   hasSelectedItem: hasSelectedItem(),
+  //   selectedItem: getSelectedItem(),
+  // });
   return (
     <div className="relative max-w-md">
       <label {...getLabelProps()}>Search users</label>

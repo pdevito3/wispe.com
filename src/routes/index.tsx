@@ -23,7 +23,10 @@ export default function App() {
           {/* Hero Section */}
           <header className="flex items-center justify-between">
             <div className="">
-              <h1 className="text-4xl font-medium">Wispe</h1>
+              <div className="flex items-center space-x-3">
+                <img src="/logo.svg" alt="Wispe Logo" className="h-8 w-8" />
+                <h1 className="text-4xl font-medium">Wispe</h1>
+              </div>
               <p className="pt-3 text-gray-300 max-w-md text-pretty">
                 A headless autocomplete for React with a Tanstack inspired API
                 and rich interactions.
