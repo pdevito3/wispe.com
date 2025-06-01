@@ -15,6 +15,7 @@ import { resolve } from "node:path";
 export default defineConfig({
   plugins: [TanStackRouterVite({ autoCodeSplitting: true }), viteReact(), tailwindcss(), 
     mdx({
+      providerImportSource: "@mdx-js/react",
       remarkPlugins: [collectHeadings],
       rehypePlugins: [
         rehypeSlug,
