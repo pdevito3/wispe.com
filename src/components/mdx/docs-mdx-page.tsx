@@ -11,7 +11,7 @@ export function DocsMdxPage({
       <main className="flex-1 px-4">
         <div className="prose max-w-none">{children}</div>
       </main>
-      <aside className="w-64 pl-8 hidden lg:block">
+      <aside className="min-w-64 pl-8 hidden lg:block">
         <TableOfContents headings={headings} />
       </aside>
     </div>

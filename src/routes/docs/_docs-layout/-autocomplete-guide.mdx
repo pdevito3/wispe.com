@@ -1,7 +1,18 @@
+import { CodeBlock, CodePreviewTabs, InstallTabs } from '@/components/code-block'
+import StandardExampleTsx from "@/components/examples/standard.tsx?raw";
+import {StandardExample} from "@/components/examples/standard";
+
+import DisabledItemTsx from "@/components/examples/disabled-item.tsx?raw";
+import {DisabledItem} from "@/components/examples/disabled-item";
+
+import DisabledInputTsx from "@/components/examples/disabled-input.tsx?raw";
+import {DisabledInput} from "@/components/examples/disabled-input";
+
 # Autocomplete Guide
 
 ## Installation
-
+Start by installing the Wispe package using your preferred package manager:
+{/* 
 ```bash
 npm install @wispe/autocomplete
 ```
@@ -13,4 +24,191 @@ pnpm add @wispe/autocomplete
 ```
 ```bash
 bun add @wispe/autocomplete
+``` */}
+
+
+{
+<div className="space-y-3 pt-3">
+<InstallTabs/>
+</div>
+}
+
+## How It Works
+The Wispe Autocomplete is built with a core hook that takes in all the information that it needs,
+and exposes properties and methods that can be composed into a component that
+suits your specific needs. This allows you to create a highly customizable autocomplete component
+that can be tailored to your application's requirements.
+
+Specially, you will generally input at least:
+
+- `items` (Required): an array of items to filter through.
+- `onFilterAsync`: an optional asynchronous function that filters the items based on the current input value.
+- `itemToString`: a function that converts an item to a string for display purposes (not needed for primitive lists).
+
+and you will get out at least:
+
+- `getRootProps`: applies the necessary props to the root element of the autocomplete component.
+- `getLabelProps`: applies the necessary props to the label element.
+- `getInputProps`: applies the necessary props to the input element.
+- `getListProps`: applies the necessary props to the list element.
+- `getItemProps`: applies the necessary props to each item in the list.
+- `getItemState`: gets the state of each item in the list, such as whether it is selected or focused.
+- `getItems`: returns the filtered list of items based on the current input value.
+- `isOpen`: indicates whether the autocomplete list is currently open.
+
+For example:
+```tsx
+import { useAutoComplete } from "@wispe/wispe-react";
+
+export interface User {
+  id: number;
+  name: string;
+}
+
+export const users: User[] = [
+  { id: 1, name: "John Doe" },
+  { id: 2, name: "Jane Smith" },
+  { id: 3, name: "Bob Johnson" },
+  { id: 4, name: "Alice Brown" },
+  { id: 5, name: "Charlie Wilson" },
+];
+
+export function BasicAutocomplete() {
+  const {
+    getRootProps,
+    getLabelProps,
+    getInputProps,
+    getListProps,
+    getItemProps,
+    getItemState,
+    getItems,
+    isOpen,
+  } = useAutoComplete({
+    items: users,
+    onFilterAsync: async ({ searchTerm }) =>
+      users.filter((u) =>
+        u.name.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    itemToString: (u) => u.name,
+  });
+
+  return (
+    <>
+      <label {...getLabelProps()}>Search users</label>
+      <div {...getRootProps()}>
+        <input {...getInputProps()} />
+
+        {isOpen && (
+          <ul {...getListProps()}>
+            {getItems().map((user) => (
+              <li key={user.id} {...getItemProps(user)}>
+                <span>
+                  {user.name} {getItemState(user).isSelected && <span>✓</span>}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </>
+  );
+}
 ```
+
+## Data
+As with Tanstack Table, the data array that you pass to the autocomplete instance MUST have a "stable" reference in order to prevent bugs that cause infinite re-renders.
+
+This will frequently mean `React.useState`, `React.useMemo`, or similar to ensure that both the data and columns table options have stable references.
+
+```tsx
+const fallbackData = []
+
+export default function MyComponent() {
+  //✅ GOOD: This will not cause an infinite loop of re-renders because `users` is a stable reference
+  const users = useMemo(() => [
+    // ...
+  ], []);
+
+  const {
+    // ...
+    isOpen,
+  } = useAutoComplete({
+    items: users,
+    onFilterAsync: async ({ searchTerm }) =>
+      users.filter((u) =>
+        u.name.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    itemToString: (u) => u.name,
+  });
+
+  //✅ GOOD: This will not cause an infinite loop of re-renders because `data` is a stable reference
+  const [data, setData] = useState(() => [
+    // ...
+  ]);
+
+  const {
+    // ...
+    isOpen,
+  } = useAutoComplete({
+    items: data,
+    onFilterAsync: async ({ searchTerm }) =>
+      data.filter((d) =>
+        d.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+  });
+
+  return <div>...</div>;
+}
+```
+
+`React.useState` and `React.useMemo` are not the only ways to give your data a stable reference. You can also define your 
+data outside of the component or use a 3rd party state management library like Redux, Zustand, or TanStack Query.
+
+The main thing to avoid is defining the data array inside the same scope as the `useAutoComplete` call. That will 
+cause the data array to be redefined on every render, which will cause an infinite loop of re-renders.
+tsx
+
+```tsx
+export default function MyComponent() {
+  //😵 BAD: This will cause an infinite loop of re-renders because `data` is redefined as a new array on every render!
+  const data = [
+    // ...
+  ];
+
+  const {
+    // ...
+    isOpen,
+  } = useAutoComplete({
+    items: data ?? [], //❌ Also bad because the fallback array is re-created on every render
+    onFilterAsync: async ({ searchTerm }) =>
+      data.filter((d) =>
+        d.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+  });
+
+  return <div>...</div>;
+}
+```
+
+## Features
+
+### Disabled Input
+To disabled the input, you can pass a `disabled` property in the `state` object when calling the 
+`useAutoComplete` hook. This will disable the input and prevent any interaction with it.
+
+You can also use the `getIsDisabled` method to check if the input is disabled, which can 
+be useful for conditionally rendering UI elements based on the disabled state.
+
+<div className="pt-3">
+  <CodePreviewTabs code={DisabledItemTsx} preview={<DisabledItem />} />
+</div>
+
+### Disabled Items
+To disable specific items in the list, you can use the `isItemDisabled` option when calling the `useAutoComplete` hook.
+This option takes a function that receives an item and returns a boolean indicating whether the item should be disabled.
+This can be any condition you want, such as checking a property of the item or its value.
+
+
+<div className="pt-3">
+  <CodePreviewTabs code={DisabledInputTsx} preview={<DisabledInput />} />
+</div>

@@ -1,3 +1,4 @@
+import { CodeBlock } from "@/components/code-block";
 import { DocsSidebar } from "@/components/docs-sidebar";
 import {
   SidebarInset,
@@ -12,9 +13,6 @@ export const Route = createFileRoute("/docs/_docs-layout")({
 });
 
 function RouteComponent() {
-  const components = {
-    em: (props: any) => <i {...props} />,
-  };
   return (
     <SidebarProvider
       style={
@@ -27,11 +25,13 @@ function RouteComponent() {
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
-          {/* <Separator orientation="vertical" className="mr-2 h-4" />
-          Peak LIMS */}
         </header>
         <div className="px-4 py-10 max-w-5xl">
-          <MDXProvider components={components}>
+          <MDXProvider
+            components={{
+              pre: (props) => <CodeBlock {...props} />,
+            }}
+          >
             <Outlet />
           </MDXProvider>
         </div>

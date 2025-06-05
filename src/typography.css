@@ -1,42 +1,42 @@
 /* Typography Styles - Default (Light) Theme */
-.prose {
+.prose:not(.not-prose) {
   max-width: none;
   color: #334155; /* slate-700 */
   text-wrap: pretty;
 }
 
-.prose hr {
+.prose hr:not(.not-prose hr) {
   border-color: #f1f5f9; /* slate-100 */
   margin-top: 3em;
   margin-bottom: 3em;
 }
 
-.prose .lead {
+.prose .lead:not(.not-prose .lead) {
   font-size: 1.125em;
   line-height: calc(32 / 18);
 }
 
-.prose h1,
-.prose h2,
-.prose h3 {
+.prose h1:not(.not-prose h1),
+.prose h2:not(.not-prose h2),
+.prose h3:not(.not-prose h3) {
   letter-spacing: -0.025em;
 }
 
-.prose h1 {
+.prose h1:not(.not-prose h1) {
   font-size: 2em;
   font-weight: 600;
   margin-top: 0;
   margin-bottom: 0.5em;
 }
 
-.prose h2 {
+.prose h2:not(.not-prose h2) {
   font-size: 1.25em;
   font-weight: 600;
   margin-top: 1.25em;
   margin-bottom: 0.15em;
 }
 
-.prose h3 {
+.prose h3:not(.not-prose h3) {
   font-size: 1.125em;
   margin-top: 2.4em;
   margin-top: 1em;
@@ -44,7 +44,7 @@
   line-height: 1.4;
 }
 
-.prose h4 {
+.prose h4:not(.not-prose h4) {
   margin-top: 2.5em;
   margin-top: 0.75em;
   margin-bottom: 0.25em;
@@ -52,41 +52,41 @@
   font-weight: 600;
 }
 
-.prose h2 small,
-.prose h3 small,
-.prose h4 small {
+.prose h2 small:not(.not-prose h2 small),
+.prose h3 small:not(.not-prose h3 small),
+.prose h4 small:not(.not-prose h4 small) {
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
   color: #64748b; /* slate-500 */
   font-weight: 500;
 }
 
-.prose h2 small {
+.prose h2 small:not(.not-prose h2 small) {
   font-size: 1.125rem;
   line-height: 1.75rem;
 }
 
-.prose h3 small {
+.prose h3 small:not(.not-prose h3 small) {
   font-size: 1rem;
   line-height: 1.5rem;
 }
 
-.prose h4 small {
+.prose h4 small:not(.not-prose h4 small) {
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
 
-.prose h2,
-.prose h3,
-.prose h4 {
+.prose h2:not(.not-prose h2),
+.prose h3:not(.not-prose h3),
+.prose h4:not(.not-prose h4) {
   scroll-margin-top: var(--scroll-mt);
 }
 
-.prose h2 code,
-.prose h3 code {
+.prose h2 code:not(.not-prose h2 code),
+.prose h3 code:not(.not-prose h3 code) {
   font: inherit;
 }
 
-.prose ul {
+.prose ul:not(.not-prose ul) {
   list-style-type: none;
   padding-left: 1em;
   margin-top: 1em;
@@ -94,7 +94,7 @@
   --tw-prose-bullets: #cbd5e1; /* slate-300 */
 }
 
-.prose ul > li {
+.prose ul > li:not(.not-prose ul > li) {
   position: relative;
   padding-left: 0.5em;
   list-style-type: disc;
@@ -102,32 +102,32 @@
   margin-bottom: 0.75em;
 }
 
-.prose a {
+.prose a:not(.not-prose a) {
   font-weight: 600;
   text-decoration: none;
   border-bottom: 1px solid #34d399; /* emerald-400 */
 }
 
-.prose a:hover {
+.prose a:not(.not-prose a):hover {
   border-bottom-width: 2px;
 }
 
-.prose a code {
+.prose a code:not(.not-prose a code) {
   color: inherit;
   font-weight: inherit;
 }
 
-.prose strong {
+.prose strong:not(.not-prose strong) {
   color: #0f172a; /* slate-900 */
   font-weight: 600;
 }
 
-.prose a strong {
+.prose a strong:not(.not-prose a strong) {
   color: inherit;
   font-weight: inherit;
 }
 
-.prose kbd {
+.prose kbd:not(.not-prose kbd) {
   background: #f1f5f9; /* slate-100 */
   border-width: 1px;
   border-color: #e2e8f0; /* slate-200 */
@@ -140,199 +140,176 @@
   margin: 0 1px;
 }
 
-.prose code {
+.prose code:not(.not-prose code) {
   font-weight: 550;
   font-variant-ligatures: none;
 }
 
-.prose strong code {
+.prose strong code:not(.not-prose strong code) {
   font-weight: 650;
 }
 
-.prose p + p {
+.prose p + p:not(.not-prose p + p) {
   margin-top: 1.5em;
 }
 
-.prose pre {
-  color: #f8fafc; /* slate-50 */
-  border-radius: 0.75rem;
-  padding: 1.25rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  display: flex;
-  margin-top: 1.428571em;
-  margin-bottom: 2.285714em;
-}
-
-.prose p + pre {
-  margin-top: -0.285714em;
-}
-
-.prose pre + pre {
-  margin-top: -1.142857em;
-}
-
-.prose pre code {
-  flex: none;
-  min-width: 100%;
-}
-
-.prose table {
+.prose table:not(.not-prose table) {
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
 
-.prose thead {
+.prose thead:not(.not-prose thead) {
   color: #334155; /* slate-700 */
   border-bottom-color: #e2e8f0; /* slate-200 */
 }
 
-.prose thead th {
+.prose thead th:not(.not-prose thead th) {
   padding-top: 0;
   font-weight: 600;
 }
 
-.prose tbody tr {
+.prose tbody tr:not(.not-prose tbody tr) {
   border-bottom-color: #f1f5f9; /* slate-100 */
 }
 
-.prose tbody tr:last-child {
+.prose tbody tr:last-child:not(.not-prose tbody tr:last-child) {
   border-bottom-width: 1px;
 }
 
-.prose tbody code {
+.prose tbody code:not(.not-prose tbody code) {
   font-size: 0.75rem;
 }
 
-.prose figure figcaption {
+.prose figure figcaption:not(.not-prose figure figcaption) {
   text-align: center;
   font-style: italic;
 }
 
-.prose figure > figcaption {
+.prose figure > figcaption:not(.not-prose figure > figcaption) {
   margin-top: 0.857143em;
 }
 
 /* Dark Theme */
 @media (prefers-color-scheme: dark) {
-  .prose {
+  .prose:not(.not-prose) {
     color: #94a3b8; /* slate-400 */
     --tw-prose-lead: #94a3b8; /* slate-400 */
     --tw-prose-bullets: #64748b; /* slate-500 */
   }
 
-  .prose h2,
-  .prose h3,
-  .prose h4,
-  .prose thead th {
+  .prose h2:not(.not-prose h2),
+  .prose h3:not(.not-prose h3),
+  .prose h4:not(.not-prose h4),
+  .prose thead th:not(.not-prose thead th) {
     color: #e2e8f0; /* slate-200 */
   }
 
-  .prose h2 small,
-  .prose h3 small,
-  .prose h4 small {
+  .prose h2 small:not(.not-prose h2 small),
+  .prose h3 small:not(.not-prose h3 small),
+  .prose h4 small:not(.not-prose h4 small) {
     color: #94a3b8; /* slate-400 */
   }
 
-  .prose kbd {
+  .prose kbd:not(.not-prose kbd) {
     background: #334155; /* slate-700 */
     border-color: #475569; /* slate-600 */
     color: #e2e8f0; /* slate-200 */
   }
 
-  .prose code {
+  .prose code:not(.not-prose code) {
     color: #e2e8f0; /* slate-200 */
   }
 
-  .prose hr {
+  .prose hr:not(.not-prose hr) {
     border-color: #e2e8f0; /* slate-200 */
     opacity: 0.05;
   }
 
-  .prose pre {
+  .prose pre:not(.not-prose pre) {
     box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
   }
 
-  .prose a {
+  .prose a:not(.not-prose a) {
     color: #ffffff;
     border-bottom-color: #10b981; /* emerald-500 */
   }
 
-  .prose strong {
+  .prose strong:not(.not-prose strong) {
     color: #e2e8f0; /* slate-200 */
   }
 
-  .prose thead {
+  .prose thead:not(.not-prose thead) {
     color: #cbd5e1; /* slate-300 */
     border-bottom-color: rgb(148 163 184 / 0.2);
   }
 
-  .prose tbody tr {
+  .prose tbody tr:not(.not-prose tbody tr) {
     border-bottom-color: rgb(148 163 184 / 0.1);
   }
 
-  .prose blockquote {
+  .prose blockquote:not(.not-prose blockquote) {
     color: #ffffff;
   }
 }
 
 /* Dark theme class variant (for manual dark mode toggle) */
-.dark .prose {
+.dark .prose:not(.not-prose) {
   color: oklch(86.9% 0.022 252.894); /* slate-300 */
   --tw-prose-lead: #94a3b8; /* slate-400 */
   --tw-prose-bullets: #64748b; /* slate-500 */
 }
 
-.dark .prose h1,
-.dark .prose h2,
-.dark .prose h3,
-.dark .prose h4,
-.dark .prose thead th {
+.dark .prose h1:not(.not-prose h1),
+.dark .prose h2:not(.not-prose h2),
+.dark .prose h3:not(.not-prose h3),
+.dark .prose h4:not(.not-prose h4),
+.dark .prose thead th:not(.not-prose thead th) {
   color: oklch(96.8% 0.007 247.896); /* slate-100 */
 }
 
-.dark .prose h2 small,
-.dark .prose h3 small,
-.dark .prose h4 small {
+.dark .prose h2 small:not(.not-prose h2 small),
+.dark .prose h3 small:not(.not-prose h3 small),
+.dark .prose h4 small:not(.not-prose h4 small) {
   color: #94a3b8; /* slate-400 */
 }
 
-.dark .prose kbd {
+.dark .prose kbd:not(.not-prose kbd) {
   background: #334155; /* slate-700 */
   border-color: #475569; /* slate-600 */
   color: oklch(96.8% 0.007 247.896); /* slate-100 */
 }
 
-.dark .prose code {
+.dark .prose code:not(.not-prose code) {
   color: #e2e8f0; /* slate-200 */
 }
 
-.dark .prose hr {
+.dark .prose hr:not(.not-prose hr) {
   border-color: #e2e8f0; /* slate-200 */
   opacity: 0.05;
 }
 
-.dark .prose pre {
+.dark .prose pre:not(.not-prose pre) {
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
 }
 
-.dark .prose a {
+.dark .prose a:not(.not-prose a) {
   color: #ffffff;
   border-bottom-color: #10b981; /* emerald-500 */
 }
 
-.dark .prose strong {
+.dark .prose strong:not(.not-prose strong) {
   color: #e2e8f0; /* slate-200 */
 }
 
-.dark .prose thead {
+.dark .prose thead:not(.not-prose thead) {
   color: #cbd5e1; /* slate-300 */
   border-bottom-color: rgb(148 163 184 / 0.2);
 }
 
-.dark .prose tbody tr {
+.dark .prose tbody tr:not(.not-prose tbody tr) {
   border-bottom-color: rgb(148 163 184 / 0.1);
 }
 
-.dark .prose blockquote {
+.dark .prose blockquote:not(.not-prose blockquote) {
   color: #ffffff;
 }
