@@ -35,6 +35,14 @@ export function Actions() {
         },
       },
       {
+        label: "Clear it better",
+        placement: "top",
+        onAction: () => {
+          clear();
+          setIsOpen(true);
+        },
+      },
+      {
         label: "Add a special fruit…",
         placement: "bottom",
         onAction: () => {

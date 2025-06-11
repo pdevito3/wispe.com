@@ -39,7 +39,8 @@ export function DisabledInput() {
             placeholder="Type to filter fruits…"
             className={cn(
               "w-full px-3 py-2 border rounded-md border-slate-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500",
-              getIsDisabled() && "bg-gray-200 cursor-not-allowed"
+              getIsDisabled() &&
+                "bg-slate-900 text-slate-500 border-slate-500 cursor-not-allowed"
             )}
           />
           {hasSelectedItem() && (
@@ -83,17 +84,6 @@ export function DisabledInput() {
             </div>
           )}
         </div>
-      </div>
-
-      <div className="p-4 mt-4 rounded-md bg-slate-600">
-        <h3 className="text-sm font-medium text-slate-100">Selected Fruit:</h3>
-        {getSelectedItem() ? (
-          <p className="mt-2 text-sm text-slate-100">
-            {getSelectedItem()?.label}
-          </p>
-        ) : (
-          <p className="mt-2 text-sm text-slate-100">No fruit selected</p>
-        )}
       </div>
     </div>
   );

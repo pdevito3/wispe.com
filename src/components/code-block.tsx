@@ -184,7 +184,7 @@ export function CodePreviewTabs({
     <div className="border border-slate-700 rounded-xl overflow-hidden not-prose">
       {/* ───── Tab Headers ───── */}
       <div className="flex bg-slate-900 text-sm font-medium">
-        {/* “Code” tab */}
+        {/* “Preview” tab */}
         <button
           onClick={() => setActiveTab(0)}
           className={cn(
@@ -194,13 +194,13 @@ export function CodePreviewTabs({
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-700"
           )}
         >
-          Code
+          Preview
           {activeTab === 0 && (
             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500" />
           )}
         </button>
 
-        {/* “Preview” tab */}
+        {/* “Code” tab */}
         <button
           onClick={() => setActiveTab(1)}
           className={cn(
@@ -210,7 +210,7 @@ export function CodePreviewTabs({
               : "text-slate-400 hover:text-slate-200 hover:bg-slate-700"
           )}
         >
-          Preview
+          Code
           {activeTab === 1 && (
             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-500" />
           )}
@@ -220,15 +220,15 @@ export function CodePreviewTabs({
       {/* ───── Tab Content ───── */}
       <div className="bg-slate-900 max-h-[40rem] [color-scheme:dark] overflow-auto">
         {activeTab === 0 ? (
+          // PREVIEW TAB: render the React node inside a little padded container
+          <div className="p-4 bg-slate-800 rounded-b-xl h-96 overflow-auto">
+            <div className="max-w-md">{preview}</div>
+          </div>
+        ) : (
           // CODE TAB: feed the raw source into your existing <CodeBlock>
           <CodeBlock language={language} showLineNumbers>
             {code}
           </CodeBlock>
-        ) : (
-          // PREVIEW TAB: render the React node inside a little padded container
-          <div className="p-4 bg-slate-800 rounded-b-xl h-96 overflow-auto">
-            {preview}
-          </div>
         )}
       </div>
     </div>

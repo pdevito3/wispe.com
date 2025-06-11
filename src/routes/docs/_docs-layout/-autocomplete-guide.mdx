@@ -8,6 +8,9 @@ import {DisabledItem} from "@/components/examples/disabled-item";
 import DisabledInputTsx from "@/components/examples/disabled-input.tsx?raw";
 import {DisabledInput} from "@/components/examples/disabled-input";
 
+import ActionsTsx from "@/components/examples/actions.tsx?raw";
+import {Actions} from "@/components/examples/actions";
+
 # Autocomplete Guide
 
 ## Installation
@@ -211,4 +214,16 @@ This can be any condition you want, such as checking a property of the item or i
 
 <div className="pt-3">
   <CodePreviewTabs code={DisabledInputTsx} preview={<DisabledInput />} />
+</div>
+
+### Actions
+You can also pass an `actions` object to the `useAutoComplete` hook to define custom actions that can be performed
+from the listbox. This can be useful for adding custom functionality like opening a modal to add a complex item, 
+or maybe adding a clear option.
+
+An action is an object that contains a `label` to display in the listbox, a placement of `top` or `bottom` to 
+determine where it should be rendered in the list, and an `onAction` callback that is called when the action is triggered.
+
+<div className="pt-3">
+  <CodePreviewTabs code={ActionsTsx} preview={<Actions />} />
 </div>
