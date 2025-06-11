@@ -8,9 +8,9 @@ export function DocsMdxPage({
 }) {
   return (
     <div className="flex w-full">
-      <main className="flex-1 px-4">
-        <div className="prose max-w-none">{children}</div>
-      </main>
+      <div className="flex-1 px-4">
+        <div className="prose max-w-5xl">{children}</div>
+      </div>
       <aside className="min-w-64 pl-8 hidden lg:block">
         <TableOfContents headings={headings} />
       </aside>

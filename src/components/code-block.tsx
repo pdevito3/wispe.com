@@ -47,7 +47,7 @@ export function CodeBlock({
       >
         <CodeBlockPrimitive.Code
           className={cn(
-            "bg-slate-900 px-6 py-4 rounded-xl shadow-lg",
+            "bg-slate-900 px-6 py-4 rounded-xl shadow-lg overflow-auto",
             classNames?.code
           )}
         >
