@@ -313,3 +313,24 @@
 .dark .prose blockquote:not(.not-prose blockquote) {
   color: #ffffff;
 }
+
+.prose code:not(.not-prose code) {
+  font-weight: 550;
+  font-variant-ligatures: none;
+  /* color: #dc2626; /* red-600 - add this line */
+  color: #10b981
+}
+
+/* Update dark theme media query */
+@media (prefers-color-scheme: dark) {
+  .prose code:not(.not-prose code) {
+    /* color: #f87171; /* red-400 - change from slate-200 */
+    color: #10b981
+  }
+}
+
+/* Update dark theme class variant */
+.dark .prose code:not(.not-prose code) {
+  /* color: #f87171; /* red-400 - change from slate-200 */
+  color: #10b981
+}

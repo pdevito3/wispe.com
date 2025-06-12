@@ -1,4 +1,4 @@
-import { fruits, type Fruit } from "@/datasets/fruit";
+import { fruits } from "@/datasets/fruit";
 import { Check, XIcon } from "@/svgs";
 import { cn } from "@/utils";
 import { useAutoComplete } from "@wispe/wispe-react";
@@ -18,7 +18,7 @@ export function MultipleGroupsExample() {
     hasSelectedItem,
     isOpen,
     getSelectedItem,
-  } = useAutoComplete<Fruit>({
+  } = useAutoComplete({
     items: fruits,
     onFilterAsync: async ({ searchTerm }) =>
       fruits.filter((f) =>

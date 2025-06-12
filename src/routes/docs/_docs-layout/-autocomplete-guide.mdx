@@ -29,6 +29,9 @@ import {ControlledExample} from "@/components/examples/controlled";
 import ControlledByIdTsx from "@/components/examples/controlled-by-id.tsx?raw";
 import {ControlledByIdExample} from "@/components/examples/controlled-by-id";
 
+import LinkItemsTsx from "@/components/examples/link-items.tsx?raw";
+import {LinkItemsExample} from "@/components/examples/link-items";
+
 
 # Autocomplete Guide
 
@@ -302,4 +305,16 @@ You can use `getSelectedValue` to retrieve the currently selected value based on
 
 <div className="py-3">
   <CodePreviewTabs code={ControlledByIdTsx} preview={<ControlledByIdExample />} />
+</div>
+
+### Link Items
+
+You can use the `getItemLinkProps` method to get the necessary props to render a link for each item in the list.
+This method will return an object with the necessary props to render a link, such as `to`, `href`, `download`, or `ping`, depending on the target of the link.
+You can also use the `getItemLink` method to get the link for each item in the list, which will return an object with the necessary props to render a link.
+You can then use these props to render a link for each item in the list, such as a `Link` component from `tanstack/router` or `react-router-dom` for internal 
+routes or or an just `a` tag for external links.
+
+<div className="py-3">
+  <CodePreviewTabs code={LinkItemsTsx} preview={<LinkItemsExample />} />
 </div>

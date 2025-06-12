@@ -108,8 +108,7 @@ export function Infinite() {
     getItemState,
     hasSelectedItem,
     getClearProps,
-    getSelectedItem,
-  } = useAutoComplete<User>({
+  } = useAutoComplete({
     state: {
       inputValue: filter,
       setInputValue: setFilter,

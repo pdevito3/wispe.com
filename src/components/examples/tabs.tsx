@@ -37,7 +37,7 @@ export function TabsExample() {
     getTabListProps,
     getTabProps,
     getTabState,
-  } = useAutoComplete<Fruit>({
+  } = useAutoComplete({
     items: fruits,
     onFilterAsync: async ({ searchTerm }) =>
       fruits.filter((f) =>

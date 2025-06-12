@@ -18,7 +18,7 @@ export function Actions() {
     getSelectedItem,
     clear,
     setIsOpen,
-  } = useAutoComplete<Fruit>({
+  } = useAutoComplete({
     items: fruits,
     onFilterAsync: async ({ searchTerm }) =>
       fruits.filter((f) =>

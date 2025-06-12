@@ -16,7 +16,7 @@ export function DisabledItem() {
     hasSelectedItem,
     isOpen,
     getSelectedItem,
-  } = useAutoComplete<Fruit>({
+  } = useAutoComplete({
     items: fruits,
     onFilterAsync: async ({ searchTerm }) =>
       fruits.filter((f) =>
