@@ -23,6 +23,12 @@ import {MultiselectExample} from "@/components/examples/multiselect";
 import TabsTsx from "@/components/examples/tabs.tsx?raw";
 import {TabsExample} from "@/components/examples/tabs";
 
+import ControlledTsx from "@/components/examples/controlled.tsx?raw";
+import {ControlledExample} from "@/components/examples/controlled";
+
+import ControlledByIdTsx from "@/components/examples/controlled-by-id.tsx?raw";
+import {ControlledByIdExample} from "@/components/examples/controlled-by-id";
+
 
 # Autocomplete Guide
 
@@ -215,7 +221,7 @@ To disabled the input, you can pass a `disabled` property in the `state` object 
 You can also use the `getIsDisabled` method to check if the input is disabled, which can 
 be useful for conditionally rendering UI elements based on the disabled state.
 
-<div className="pt-3">
+<div className="py-3">
   <CodePreviewTabs code={DisabledItemTsx} preview={<DisabledItem />} />
 </div>
 
@@ -225,7 +231,7 @@ This option takes a function that receives an item and returns a boolean indicat
 This can be any condition you want, such as checking a property of the item or its value.
 
 
-<div className="pt-3">
+<div className="py-3">
   <CodePreviewTabs code={DisabledInputTsx} preview={<DisabledInput />} />
 </div>
 
@@ -237,7 +243,7 @@ or maybe adding a clear option.
 An action is an object that contains a `label` to display in the listbox, a placement of `top` or `bottom` to 
 determine where it should be rendered in the list, and an `onAction` callback that is called when the action is triggered.
 
-<div className="pt-3">
+<div className="py-3">
   <CodePreviewTabs code={ActionsTsx} preview={<Actions />} />
 </div>
 
@@ -255,7 +261,7 @@ display in whatever way makes sense for you.
 
 If you pass multiple groupings, you will see group types down the item hierarchy until you get to the actual items.
 
-<div className="pt-3">
+<div className="py-3">
   <CodePreviewTabs code={MultipleGroupsTsx} preview={<MultipleGroupsExample />} />
 </div>
 
@@ -264,7 +270,7 @@ You can enable multi-select mode by passing a `mode` of `multiple` to the `useAu
 allow multiple items to be selected at once. The autocomplete is smart enough to then know that methods like `getSelectedItems` should return 
 an array of the currently selected items now.
 
-<div className="pt-3">
+<div className="py-3">
   <CodePreviewTabs code={MultiselectTsx} preview={<MultiselectExample />} />
 </div>
 
@@ -276,6 +282,24 @@ be included in the tab.
 
 Note that as with the autocomplete items, the tabs should have some kind of stable data source as described above.
 
-<div className="pt-3">
+<div className="py-3">
   <CodePreviewTabs code={TabsTsx} preview={<TabsExample />} />
+</div>
+
+### Controlled
+You can control the selected value of the autocomplete by passing a `state` object with a `selectedValue` and a `setSelectedValue` function. 
+By default, this should be typed as whatever type `T` your items are being passed in as.
+
+<div className="py-3">
+  <CodePreviewTabs code={ControlledTsx} preview={<ControlledExample />} />
+</div>
+
+Additionally, you can narrow the selected value to a specific property on your item by passing a `mapValue` function that maps the selected 
+value for the item to whatever property you want to actually use as the selected value. 
+You can do this in a controlled state or not, but is  useful for when you want to control the autocomplete by a specific 
+property on your item, such as an ID or a slug, maybe for a form where you just need to submit a foreign key. 
+You can use `getSelectedValue` to retrieve the currently selected value based on the `mapValue` function.
+
+<div className="py-3">
+  <CodePreviewTabs code={ControlledByIdTsx} preview={<ControlledByIdExample />} />
 </div>

@@ -1,5 +1,6 @@
 export const fruits = [
   {
+    id: 1,
     value: "apple",
     label: "🍎 Apple",
     color: "red",
@@ -8,6 +9,7 @@ export const fruits = [
     type: "pome",
   },
   {
+    id: 2,
     value: "banana",
     label: "🍌 Banana",
     color: "yellow",
@@ -16,6 +18,7 @@ export const fruits = [
     type: "berry",
   },
   {
+    id: 3,
     value: "orange",
     label: "🍊 Orange",
     color: "orange",
@@ -24,6 +27,7 @@ export const fruits = [
     type: "citrus",
   },
   {
+    id: 4,
     value: "strawberry",
     label: "🍓 Strawberry",
     color: "red",
@@ -32,6 +36,7 @@ export const fruits = [
     type: "berry",
   },
   {
+    id: 5,
     value: "grape",
     label: "🍇 Grape",
     color: "purple",
@@ -40,6 +45,7 @@ export const fruits = [
     type: "berry",
   },
   {
+    id: 6,
     value: "watermelon",
     label: "🍉 Watermelon",
     color: "green",
@@ -48,6 +54,7 @@ export const fruits = [
     type: "melon",
   },
   {
+    id: 7,
     value: "pineapple",
     label: "🍍 Pineapple",
     color: "yellow",
@@ -56,6 +63,7 @@ export const fruits = [
     type: "tropical",
   },
   {
+    id: 8,
     value: "kiwi",
     label: "🥝 Kiwi",
     color: "green",
@@ -64,6 +72,7 @@ export const fruits = [
     type: "berry",
   },
   {
+    id: 9,
     value: "mango",
     label: "🥭 Mango",
     color: "yellow",
@@ -72,6 +81,7 @@ export const fruits = [
     type: "tropical",
   },
   {
+    id: 10,
     value: "cherry",
     label: "🍒 Cherry",
     color: "red",
@@ -80,6 +90,7 @@ export const fruits = [
     type: "stone",
   },
   {
+    id: 11,
     value: "pear",
     label: "🍐 Pear",
     color: "green",
@@ -88,6 +99,7 @@ export const fruits = [
     type: "pome",
   },
   {
+    id: 12,
     value: "peach",
     label: "🍑 Peach",
     color: "orange",
@@ -96,6 +108,7 @@ export const fruits = [
     type: "stone",
   },
   {
+    id: 13,
     value: "lemon",
     label: "🍋 Lemon",
     color: "yellow",
