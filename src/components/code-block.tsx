@@ -218,10 +218,10 @@ export function CodePreviewTabs({
       </div>
 
       {/* ───── Tab Content ───── */}
-      <div className="bg-slate-900 max-h-[40rem] [color-scheme:dark] overflow-auto">
+      <div className="bg-slate-900 max-h-[50rem] [color-scheme:dark] overflow-auto">
         {activeTab === 0 ? (
           // PREVIEW TAB: render the React node inside a little padded container
-          <div className="p-4 bg-slate-800 rounded-b-xl h-96 overflow-auto">
+          <div className="p-4 bg-slate-800 rounded-b-xl h-112 overflow-auto">
             <div className="max-w-md">{preview}</div>
           </div>
         ) : (

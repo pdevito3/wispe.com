@@ -16,7 +16,7 @@ export function MultiselectExample() {
     hasSelectedItem,
     isOpen,
     getSelectedItem,
-  } = useAutoComplete<Fruit>({
+  } = useAutoComplete({
     items: fruits,
     onFilterAsync: async ({ searchTerm }) =>
       fruits.filter((f) =>
@@ -26,9 +26,7 @@ export function MultiselectExample() {
     mode: "multiple",
   });
 
-  const selected =
-    (getSelectedItem() as (typeof fruits)[0][] | undefined) ?? [];
-  const countPlaceholder = `${selected.length} fruit selected`;
+  const countPlaceholder = `${getSelectedItem().length} fruit selected`;
 
   return (
     <div className="w-full">
@@ -38,9 +36,9 @@ export function MultiselectExample() {
         {/* Combined container for pills + input */}
         <div className="w-full flex flex-wrap items-center gap-1 px-3 py-2 border rounded-md border-slate-300 focus-within:ring-2 focus-within:ring-emerald-500 focus-within:border-emerald-500">
           {/* Pills */}
-          {selected.length > 0 &&
-            selected.length <= 2 &&
-            selected.map((fruit) => (
+          {getSelectedItem().length > 0 &&
+            getSelectedItem().length <= 2 &&
+            getSelectedItem().map((fruit) => (
               <span
                 key={fruit.value}
                 className="flex items-center px-2 py-1 bg-emerald-100 text-emerald-800 rounded-full text-sm"
@@ -53,13 +51,13 @@ export function MultiselectExample() {
           <input
             {...getInputProps()}
             placeholder={
-              selected.length > 2
+              getSelectedItem().length > 2
                 ? countPlaceholder
                 : "Type to filter fruits..."
             }
             className={cn(
               "flex-1 min-w-0 bg-transparent p-0 border-none focus:outline-none",
-              selected.length > 0 && "pl-1"
+              getSelectedItem().length > 0 && "pl-1"
             )}
           />
 
@@ -113,9 +111,9 @@ export function MultiselectExample() {
           <h3 className="text-sm font-medium text-slate-100">
             Selected Fruits:
           </h3>
-          {selected.length ? (
+          {getSelectedItem().length ? (
             <ul className="mt-2 flex flex-wrap gap-2">
-              {selected.map((fruit) => (
+              {getSelectedItem().map((fruit) => (
                 <li
                   key={fruit.value}
                   className="flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm"
@@ -132,5 +130,3 @@ export function MultiselectExample() {
     </div>
   );
 }
-
-// ... rest of file unchanged

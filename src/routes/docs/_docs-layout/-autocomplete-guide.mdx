@@ -11,6 +11,19 @@ import {DisabledInput} from "@/components/examples/disabled-input";
 import ActionsTsx from "@/components/examples/actions.tsx?raw";
 import {Actions} from "@/components/examples/actions";
 
+import GroupsTsx from "@/components/examples/groups.tsx?raw";
+import {GroupsExample} from "@/components/examples/groups";
+
+import MultipleGroupsTsx from "@/components/examples/multiple-groups.tsx?raw";
+import {MultipleGroupsExample} from "@/components/examples/multiple-groups";
+
+import MultiselectTsx from "@/components/examples/multiselect.tsx?raw";
+import {MultiselectExample} from "@/components/examples/multiselect";
+
+import TabsTsx from "@/components/examples/tabs.tsx?raw";
+import {TabsExample} from "@/components/examples/tabs";
+
+
 # Autocomplete Guide
 
 ## Installation
@@ -217,7 +230,7 @@ This can be any condition you want, such as checking a property of the item or i
 </div>
 
 ### Actions
-You can also pass an `actions` object to the `useAutoComplete` hook to define custom actions that can be performed
+You can pass an `actions` object to the `useAutoComplete` hook to define custom actions that can be performed
 from the listbox. This can be useful for adding custom functionality like opening a modal to add a complex item, 
 or maybe adding a clear option.
 
@@ -226,4 +239,43 @@ determine where it should be rendered in the list, and an `onAction` callback th
 
 <div className="pt-3">
   <CodePreviewTabs code={ActionsTsx} preview={<Actions />} />
+</div>
+
+### Groupings
+You can use `state.grouping` to pass a list of groupings (`{ label: string, key: keyof T }[]`) to the `useAutoComplete` hook.
+The `key` is the property of the item that you want to group by, and the `label` is the label to display for the group.
+
+The `getGroupProps`, `getGroupLabelProps`, and `getItems` methods are used to retrieve the groups and their items to 
+display in whatever way makes sense for you.
+
+
+<div className="py-3">
+  <CodePreviewTabs code={GroupsTsx} preview={<GroupsExample />} />
+</div>
+
+If you pass multiple groupings, you will see group types down the item hierarchy until you get to the actual items.
+
+<div className="pt-3">
+  <CodePreviewTabs code={MultipleGroupsTsx} preview={<MultipleGroupsExample />} />
+</div>
+
+### Multiselect
+You can enable multi-select mode by passing a `mode` of `multiple` to the `useAutoComplete` hook. This will tell the autocomplete hook to
+allow multiple items to be selected at once. The autocomplete is smart enough to then know that methods like `getSelectedItems` should return 
+an array of the currently selected items now.
+
+<div className="pt-3">
+  <CodePreviewTabs code={MultiselectTsx} preview={<MultiselectExample />} />
+</div>
+
+### Tabs
+Tabs can be used to filter items in the list based on a given callback. To use tabs, you can pass a `tabs` array 
+to the `useAutoComplete` hook, which contains objects with a `label`, a `filter` function, and a `key`. The filter
+takes in an item of whatever type you are using, and returns a boolean indicating whether the item should 
+be included in the tab.
+
+Note that as with the autocomplete items, the tabs should have some kind of stable data source as described above.
+
+<div className="pt-3">
+  <CodePreviewTabs code={TabsTsx} preview={<TabsExample />} />
 </div>

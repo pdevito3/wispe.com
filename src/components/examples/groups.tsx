@@ -73,7 +73,7 @@ export function GroupsExample() {
                             key={fruit.value}
                             {...getItemProps(fruit)}
                             className={cn(
-                              "px-4 py-2 flex items-center justify-between",
+                              "px-4 py-2 flex items-center justify-between hover:bg-slate-700",
                               getItemState(fruit).isActive && "bg-slate-700"
                             )}
                           >
