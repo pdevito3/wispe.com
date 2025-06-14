@@ -32,6 +32,21 @@ import {ControlledByIdExample} from "@/components/examples/controlled-by-id";
 import LinkItemsTsx from "@/components/examples/link-items.tsx?raw";
 import {LinkItemsExample} from "@/components/examples/link-items";
 
+import AnimatedTsx from "@/components/examples/animated.tsx?raw";
+import {AnimatedExample} from "@/components/examples/animated";
+
+import DisclosureTsx from "@/components/examples/disclosure.tsx?raw";
+import {DisclosureExample} from "@/components/examples/disclosure";
+
+import TanstackTsx from "@/components/examples/tanstack.tsx?raw";
+import {TanstackExample} from "@/components/examples/tanstack";
+
+import ReactHookFormTsx from "@/components/examples/react-hook-form.tsx?raw";
+import {ReactHookFormExample} from "@/components/examples/react-hook-form";
+
+
+
+
 
 # Autocomplete Guide
 
@@ -82,6 +97,7 @@ and you will get out at least:
 - `isOpen`: indicates whether the autocomplete list is currently open.
 
 For example:
+<div className="py-3"/>
 ```tsx
 import { useAutoComplete } from "@wispe/wispe-react";
 
@@ -145,6 +161,7 @@ As with Tanstack Table, the data array that you pass to the autocomplete instanc
 
 This will frequently mean `React.useState`, `React.useMemo`, or similar to ensure that both the data and columns table options have stable references.
 
+<div className="py-3"/>
 ```tsx
 const fallbackData = []
 
@@ -186,6 +203,8 @@ export default function MyComponent() {
 }
 ```
 
+<div className="py-3"/>
+
 `React.useState` and `React.useMemo` are not the only ways to give your data a stable reference. You can also define your 
 data outside of the component or use a 3rd party state management library like Redux, Zustand, or TanStack Query.
 
@@ -193,6 +212,7 @@ The main thing to avoid is defining the data array inside the same scope as the 
 cause the data array to be redefined on every render, which will cause an infinite loop of re-renders.
 tsx
 
+<div className="py-3"/>
 ```tsx
 export default function MyComponent() {
   //😵 BAD: This will cause an infinite loop of re-renders because `data` is redefined as a new array on every render!
@@ -236,6 +256,13 @@ This can be any condition you want, such as checking a property of the item or i
 
 <div className="py-3">
   <CodePreviewTabs code={DisabledInputTsx} preview={<DisabledInput />} />
+</div>
+
+### Disclosure
+You can use the `getDisclosureProps` method to get the necessary props to render a disclosure component as a button that toggles the visibility of the autocomplete list.
+
+<div className="py-3">
+  <CodePreviewTabs code={DisclosureTsx} preview={<DisclosureExample />} />
 </div>
 
 ### Actions
@@ -307,6 +334,21 @@ You can use `getSelectedValue` to retrieve the currently selected value based on
   <CodePreviewTabs code={ControlledByIdTsx} preview={<ControlledByIdExample />} />
 </div>
 
+### Form Libraries
+You can use the `useAutoComplete` hook with form libraries like [React Hook Form](https://react-hook-form.com/) 
+or [Tanstack Form](https://tanstack.com/form/latest/docs/overview) to integrate the autocomplete with your forms.
+
+Tanstack Form:
+<div className="py-3">
+  <CodePreviewTabs code={TanstackTsx} preview={<TanstackExample />} />
+</div>
+
+React Hook Form:
+<div className="py-3">
+  <CodePreviewTabs code={ReactHookFormTsx} preview={<ReactHookFormExample />} />
+</div>
+
+
 ### Link Items
 
 You can use the `getItemLinkProps` method to get the necessary props to render a link for each item in the list.
@@ -317,4 +359,12 @@ routes or or an just `a` tag for external links.
 
 <div className="py-3">
   <CodePreviewTabs code={LinkItemsTsx} preview={<LinkItemsExample />} />
+</div>
+
+### Animation
+You can integrate libraries like [Framer Motion](https://www.framer.com/docs/animation/) or [React Spring](https://react-spring.io/) to animate the 
+autocomplete if you'd like.
+
+<div className="py-3">
+  <CodePreviewTabs code={AnimatedTsx} preview={<AnimatedExample />} />
 </div>

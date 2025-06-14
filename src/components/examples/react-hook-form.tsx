@@ -3,10 +3,26 @@ import { Check, XIcon } from "@/svgs";
 import { cn } from "@/utils";
 import { useAutoComplete } from "@wispe/wispe-react";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
-export function ControlledByIdExample() {
-  // external “selected value” is just the fruit's numeric ID
-  const [selectedId, setSelectedId] = useState<number | undefined>(2);
+interface AutocompleteProps<T> {
+  value?: T;
+  onChange: (value: T | undefined) => void;
+  items: T[];
+  label: string;
+  itemToString: (item: T) => string;
+  onClearAsync?: (params: { signal: AbortSignal }) => Promise<void>;
+}
+
+export function ControllableAutocomplete<T>({
+  value,
+  onChange,
+  items,
+  label,
+  itemToString,
+  onClearAsync,
+}: AutocompleteProps<T>) {
+  const [isOpen, setIsOpen] = useState(false);
 
   const {
     getRootProps,
@@ -15,30 +31,30 @@ export function ControlledByIdExample() {
     getListProps,
     getItemProps,
     getItemState,
-    getItems,
     getClearProps,
     hasSelectedItem,
-    isOpen,
-    getSelectedItem,
-    getSelectedValue,
-  } = useAutoComplete({
-    items: fruits,
-    mapValue: (f) => f.id,
+    getItems,
+  } = useAutoComplete<T>({
+    items,
     state: {
-      selectedValue: selectedId,
-      setSelectedValue: setSelectedId,
+      selectedValue: value,
+      setSelectedValue: onChange,
+      isOpen,
+      setIsOpen,
     },
+    asyncDebounceMs: 300,
     onFilterAsync: async ({ searchTerm }) =>
-      fruits.filter((f) =>
-        f.label.toLowerCase().includes(searchTerm.toLowerCase())
+      items.filter((item) =>
+        itemToString(item).toLowerCase().includes(searchTerm.toLowerCase())
       ),
-    itemToString: (f) => f.label,
+    itemToString,
+    onClearAsync,
   });
 
   return (
     <div className="w-full">
       <div className="relative">
-        <label {...getLabelProps()}>Search fruits</label>
+        <label {...getLabelProps()}>{label}</label>
         <div {...getRootProps()} className="relative">
           <input
             {...getInputProps()}
@@ -87,23 +103,57 @@ export function ControlledByIdExample() {
           )}
         </div>
       </div>
-
-      <div className="p-4 mt-4 rounded-md bg-slate-600">
-        <h3 className="text-sm font-medium text-slate-100">Selected Fruit:</h3>
-
-        {getSelectedItem() ? (
-          <div className="space-y-3 mt-3">
-            <p className="font-bold text-sm">
-              Selected Value: {getSelectedValue()}
-              <span className="mt-2 text-sm text-slate-100">
-                {getSelectedItem()?.label}
-              </span>
-            </p>
-          </div>
-        ) : (
-          <p className="mt-2 text-sm text-slate-100">No fruit selected</p>
-        )}
-      </div>
     </div>
+  );
+}
+
+export function ReactHookFormExample() {
+  type FormValues = {
+    fruit?: Fruit;
+  };
+
+  const {
+    handleSubmit,
+    control,
+    formState: { isSubmitting },
+  } = useForm<FormValues>({
+    defaultValues: { fruit: undefined },
+  });
+
+  const onSubmit = (data: FormValues) => {
+    console.log("Submitted:", data.fruit);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md space-y-4">
+      <Controller
+        name="fruit"
+        control={control}
+        render={({ field }) => (
+          <ControllableAutocomplete<Fruit>
+            value={field.value}
+            onChange={field.onChange}
+            // RHF needs onChange to set to null not undefined
+            onClearAsync={async () => {
+              field.onChange(null);
+            }}
+            items={fruits}
+            label="Fruit"
+            itemToString={(f) => f.label}
+          />
+        )}
+      />
+
+      <div className="space-y-2">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="px-4 py-2 text-white bg-emerald-600 rounded-md hover:bg-emerald-700 disabled:opacity-50"
+        >
+          {isSubmitting ? "Saving…" : "Submit"}
+        </button>
+        <p className="text-xs text-slate-400 italic">Logs to console</p>
+      </div>
+    </form>
   );
 }

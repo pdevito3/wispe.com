@@ -1,12 +1,26 @@
 import { fruits, type Fruit } from "@/datasets/fruit";
 import { Check, XIcon } from "@/svgs";
 import { cn } from "@/utils";
+import { useForm } from "@tanstack/react-form";
 import { useAutoComplete } from "@wispe/wispe-react";
 import { useState } from "react";
 
-export function ControlledByIdExample() {
-  // external “selected value” is just the fruit's numeric ID
-  const [selectedId, setSelectedId] = useState<number | undefined>(2);
+interface AutocompleteProps<T> {
+  value?: T;
+  onChange: (value: T | undefined) => void;
+  items: T[];
+  label: string;
+  itemToString: (item: T) => string;
+}
+
+export function ControllableAutocomplete<T>({
+  value,
+  onChange,
+  items,
+  label,
+  itemToString,
+}: AutocompleteProps<T>) {
+  const [isOpen, setIsOpen] = useState(false);
 
   const {
     getRootProps,
@@ -15,30 +29,29 @@ export function ControlledByIdExample() {
     getListProps,
     getItemProps,
     getItemState,
-    getItems,
     getClearProps,
     hasSelectedItem,
-    isOpen,
-    getSelectedItem,
-    getSelectedValue,
-  } = useAutoComplete({
-    items: fruits,
-    mapValue: (f) => f.id,
+    getItems,
+  } = useAutoComplete<T>({
+    items,
     state: {
-      selectedValue: selectedId,
-      setSelectedValue: setSelectedId,
+      selectedValue: value,
+      setSelectedValue: onChange,
+      isOpen,
+      setIsOpen,
     },
+    asyncDebounceMs: 300,
     onFilterAsync: async ({ searchTerm }) =>
-      fruits.filter((f) =>
-        f.label.toLowerCase().includes(searchTerm.toLowerCase())
+      items.filter((item) =>
+        itemToString(item).toLowerCase().includes(searchTerm.toLowerCase())
       ),
-    itemToString: (f) => f.label,
+    itemToString,
   });
 
   return (
     <div className="w-full">
       <div className="relative">
-        <label {...getLabelProps()}>Search fruits</label>
+        <label {...getLabelProps()}>{label}</label>
         <div {...getRootProps()} className="relative">
           <input
             {...getInputProps()}
@@ -87,23 +100,49 @@ export function ControlledByIdExample() {
           )}
         </div>
       </div>
-
-      <div className="p-4 mt-4 rounded-md bg-slate-600">
-        <h3 className="text-sm font-medium text-slate-100">Selected Fruit:</h3>
-
-        {getSelectedItem() ? (
-          <div className="space-y-3 mt-3">
-            <p className="font-bold text-sm">
-              Selected Value: {getSelectedValue()}
-              <span className="mt-2 text-sm text-slate-100">
-                {getSelectedItem()?.label}
-              </span>
-            </p>
-          </div>
-        ) : (
-          <p className="mt-2 text-sm text-slate-100">No fruit selected</p>
-        )}
-      </div>
     </div>
+  );
+}
+
+export function TanstackExample() {
+  const form = useForm({
+    defaultValues: { fruit: undefined as Fruit | undefined },
+    onSubmit: async ({ value }) => {
+      console.log("Submitted:", value);
+    },
+  });
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        void form.handleSubmit();
+      }}
+      className="max-w-md space-y-4"
+    >
+      <form.Field
+        name="fruit"
+        children={(field) => (
+          <ControllableAutocomplete<Fruit>
+            value={field.state.value}
+            onChange={field.handleChange}
+            items={fruits}
+            label="Fruit"
+            itemToString={(f) => f.label}
+          />
+        )}
+      />
+
+      <div className="space-y-2">
+        <button
+          type="submit"
+          disabled={!form.state.canSubmit}
+          className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700"
+        >
+          Submit
+        </button>
+        <p className="text-xs text-slate-400 italic">Logs to console</p>
+      </div>
+    </form>
   );
 }

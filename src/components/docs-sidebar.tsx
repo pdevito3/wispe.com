@@ -33,16 +33,16 @@ const data = {
         },
       ],
     },
-    {
-      title: "Examples",
-      url: "/docs/examples",
-      items: [
-        {
-          title: "TODO",
-          url: "/docs/todo",
-        },
-      ],
-    },
+    // {
+    //   title: "Examples",
+    //   url: "/docs/examples",
+    //   items: [
+    //     {
+    //       title: "TODO",
+    //       url: "/docs/todo",
+    //     },
+    //   ],
+    // },
   ],
 };
 

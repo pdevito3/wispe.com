@@ -2,12 +2,8 @@ import { fruits, type Fruit } from "@/datasets/fruit";
 import { Check, XIcon } from "@/svgs";
 import { cn } from "@/utils";
 import { useAutoComplete } from "@wispe/wispe-react";
-import { useState } from "react";
 
-export function ControlledByIdExample() {
-  // external “selected value” is just the fruit's numeric ID
-  const [selectedId, setSelectedId] = useState<number | undefined>(2);
-
+export function DisclosureExample() {
   const {
     getRootProps,
     getLabelProps,
@@ -18,16 +14,11 @@ export function ControlledByIdExample() {
     getItems,
     getClearProps,
     hasSelectedItem,
+    getDisclosureProps,
     isOpen,
     getSelectedItem,
-    getSelectedValue,
   } = useAutoComplete({
     items: fruits,
-    mapValue: (f) => f.id,
-    state: {
-      selectedValue: selectedId,
-      setSelectedValue: setSelectedId,
-    },
     onFilterAsync: async ({ searchTerm }) =>
       fruits.filter((f) =>
         f.label.toLowerCase().includes(searchTerm.toLowerCase())
@@ -54,6 +45,27 @@ export function ControlledByIdExample() {
               <XIcon />
             </button>
           )}
+          <button
+            type="button"
+            {...getDisclosureProps()}
+            className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 hover:text-slate-500 bg-transparent p-1 shrink-0"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-4 h-4"
+            >
+              <path d="m7 15 5 5 5-5" />
+              <path d="m7 9 5-5 5 5" />
+            </svg>
+          </button>
 
           {isOpen && (
             <div className="absolute z-10 w-full mt-1 bg-slate-900 border border-slate-900 rounded-md shadow-lg">
@@ -90,16 +102,10 @@ export function ControlledByIdExample() {
 
       <div className="p-4 mt-4 rounded-md bg-slate-600">
         <h3 className="text-sm font-medium text-slate-100">Selected Fruit:</h3>
-
         {getSelectedItem() ? (
-          <div className="space-y-3 mt-3">
-            <p className="font-bold text-sm">
-              Selected Value: {getSelectedValue()}
-              <span className="mt-2 text-sm text-slate-100">
-                {getSelectedItem()?.label}
-              </span>
-            </p>
-          </div>
+          <p className="mt-2 text-sm text-slate-100">
+            {getSelectedItem()?.label}
+          </p>
         ) : (
           <p className="mt-2 text-sm text-slate-100">No fruit selected</p>
         )}

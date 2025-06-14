@@ -92,12 +92,12 @@ export function ControlledExample() {
         {getSelectedItem() ? (
           <div className="space-y-3 mt-3">
             <p className="font-bold text-sm">
-              <p className="font-bold text-sm overflow-auto whitespace-pre-line">
+              <span className="font-bold text-sm overflow-auto whitespace-pre-line">
                 Selected Value: {JSON.stringify(getSelectedValue(), null, 2)}
-              </p>
-              <p className="mt-2 text-sm text-slate-100">
+              </span>
+              <span className="mt-2 text-sm text-slate-100">
                 {getSelectedItem()?.label}
-              </p>
+              </span>
             </p>
           </div>
         ) : (
