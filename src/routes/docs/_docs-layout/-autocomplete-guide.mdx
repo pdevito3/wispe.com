@@ -44,7 +44,11 @@ import {TanstackExample} from "@/components/examples/tanstack";
 import ReactHookFormTsx from "@/components/examples/react-hook-form.tsx?raw";
 import {ReactHookFormExample} from "@/components/examples/react-hook-form";
 
+import InfiniteTsx from "@/components/examples/infinite.tsx?raw";
+import {Infinite} from "@/components/examples/infinite";
 
+import CustomEntryTsx from "@/components/examples/custom-entry.tsx?raw";
+import {CustomEntryExample} from "@/components/examples/custom-entry";
 
 
 
@@ -334,9 +338,9 @@ You can use `getSelectedValue` to retrieve the currently selected value based on
   <CodePreviewTabs code={ControlledByIdTsx} preview={<ControlledByIdExample />} />
 </div>
 
-### Form Libraries
-You can use the `useAutoComplete` hook with form libraries like [React Hook Form](https://react-hook-form.com/) 
-or [Tanstack Form](https://tanstack.com/form/latest/docs/overview) to integrate the autocomplete with your forms.
+#### Form Libraries
+Your autocomplete can be controlled and used with form libraries like [React Hook Form](https://react-hook-form.com/) 
+or [Tanstack Form](https://tanstack.com/form/) as well.
 
 Tanstack Form:
 <div className="py-3">
@@ -367,4 +371,31 @@ autocomplete if you'd like.
 
 <div className="py-3">
   <CodePreviewTabs code={AnimatedTsx} preview={<AnimatedExample />} />
+</div>
+
+### Custom Entries
+Use the boolean option `allowCustomEntries` to allow users to enter custom values that are not in the list of items. You can also use 
+the returned `isCustomItem` to check if an item is custom or in the input list of items. Additionally, there is a `data-custom` attribute 
+that is set to `true` on each item that is a custom entry.
+
+<div className="py-3">
+  <CodePreviewTabs code={CustomEntryTsx} preview={<CustomEntryExample />} />
+</div>
+
+### Asynchronous Data
+It's common to use autocompletes with asynchronous data sources, such as fetching data from an API. As far as the autocomplete is concerned,
+you just needs a stable reference to the item and you'll be set for your items. To handle asynchronous filtering of items based on the current search term,
+you can still pass an `onFilterAsync` function to the `useAutoComplete` hook, but it may behave differently now, like 
+updating query params to pass to your API call.
+
+#### Debounce
+USe the `asyncDebounce` option to debounce the asynchronous filtering of items. This can be useful to prevent excessive API calls or
+to improve performance when dealing with large datasets. You can pass a debounce time in milliseconds to the `asyncDebounce` option.
+
+#### Virtualized Data and Infinite Scrolling
+You can integrate libraries like [Tanstack Virtual](https://tanstack.com/virtual) to virtualize the list of items and 
+improve performance when dealing with large datasets.
+
+<div className="py-3">
+  <CodePreviewTabs code={InfiniteTsx} preview={<Infinite />} />
 </div>

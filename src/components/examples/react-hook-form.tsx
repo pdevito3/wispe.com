@@ -58,6 +58,7 @@ export function ControllableAutocomplete<T>({
         <div {...getRootProps()} className="relative">
           <input
             {...getInputProps()}
+            value={value ? itemToString(value) : ""}
             placeholder="Type to filter fruits…"
             className="w-full px-3 py-2 border rounded-md border-slate-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
           />

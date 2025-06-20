@@ -98,7 +98,6 @@ export function Infinite() {
     virtualItems,
   ]);
 
-  // wire up autocomplete so typing drives `filter`
   const {
     getRootProps,
     getLabelProps,
@@ -126,12 +125,8 @@ export function Infinite() {
       // return allUsers so hook's internal list stays in sync
       return allUsers;
     },
-    // listboxRef: parentRef,
+    listboxRef: parentRef,
   });
-  // console.log({
-  //   hasSelectedItem: hasSelectedItem(),
-  //   selectedItem: getSelectedItem(),
-  // });
   return (
     <div className="relative max-w-md">
       <label {...getLabelProps()}>Search users</label>
@@ -198,12 +193,6 @@ export function Infinite() {
                 }
 
                 const user = allUsers[idx];
-                console.log({
-                  user,
-                  getItemState: getItemState(user),
-                  isActive: getItemState(user).isActive,
-                  isSelected: getItemState(user).isSelected,
-                });
                 return (
                   <li
                     key={user.id}
