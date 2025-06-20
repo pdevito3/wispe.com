@@ -16,7 +16,6 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as DocsDocsLayoutImport } from './routes/docs/_docs-layout'
 import { Route as DocsDocsLayoutIndexImport } from './routes/docs/_docs-layout/index'
-import { Route as DocsDocsLayoutBackgroundImport } from './routes/docs/_docs-layout/background'
 import { Route as DocsDocsLayoutAutocompleteGuideImport } from './routes/docs/_docs-layout/autocomplete-guide'
 
 // Create Virtual Routes
@@ -45,12 +44,6 @@ const DocsDocsLayoutRoute = DocsDocsLayoutImport.update({
 const DocsDocsLayoutIndexRoute = DocsDocsLayoutIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => DocsDocsLayoutRoute,
-} as any)
-
-const DocsDocsLayoutBackgroundRoute = DocsDocsLayoutBackgroundImport.update({
-  id: '/background',
-  path: '/background',
   getParentRoute: () => DocsDocsLayoutRoute,
 } as any)
 
@@ -93,13 +86,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsDocsLayoutAutocompleteGuideImport
       parentRoute: typeof DocsDocsLayoutImport
     }
-    '/docs/_docs-layout/background': {
-      id: '/docs/_docs-layout/background'
-      path: '/background'
-      fullPath: '/docs/background'
-      preLoaderRoute: typeof DocsDocsLayoutBackgroundImport
-      parentRoute: typeof DocsDocsLayoutImport
-    }
     '/docs/_docs-layout/': {
       id: '/docs/_docs-layout/'
       path: '/'
@@ -114,13 +100,11 @@ declare module '@tanstack/react-router' {
 
 interface DocsDocsLayoutRouteChildren {
   DocsDocsLayoutAutocompleteGuideRoute: typeof DocsDocsLayoutAutocompleteGuideRoute
-  DocsDocsLayoutBackgroundRoute: typeof DocsDocsLayoutBackgroundRoute
   DocsDocsLayoutIndexRoute: typeof DocsDocsLayoutIndexRoute
 }
 
 const DocsDocsLayoutRouteChildren: DocsDocsLayoutRouteChildren = {
   DocsDocsLayoutAutocompleteGuideRoute: DocsDocsLayoutAutocompleteGuideRoute,
-  DocsDocsLayoutBackgroundRoute: DocsDocsLayoutBackgroundRoute,
   DocsDocsLayoutIndexRoute: DocsDocsLayoutIndexRoute,
 }
 
@@ -142,7 +126,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/docs': typeof DocsDocsLayoutRouteWithChildren
   '/docs/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
-  '/docs/background': typeof DocsDocsLayoutBackgroundRoute
   '/docs/': typeof DocsDocsLayoutIndexRoute
 }
 
@@ -150,7 +133,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/docs': typeof DocsDocsLayoutIndexRoute
   '/docs/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
-  '/docs/background': typeof DocsDocsLayoutBackgroundRoute
 }
 
 export interface FileRoutesById {
@@ -159,27 +141,20 @@ export interface FileRoutesById {
   '/docs': typeof DocsRouteWithChildren
   '/docs/_docs-layout': typeof DocsDocsLayoutRouteWithChildren
   '/docs/_docs-layout/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
-  '/docs/_docs-layout/background': typeof DocsDocsLayoutBackgroundRoute
   '/docs/_docs-layout/': typeof DocsDocsLayoutIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/docs'
-    | '/docs/autocomplete-guide'
-    | '/docs/background'
-    | '/docs/'
+  fullPaths: '/' | '/docs' | '/docs/autocomplete-guide' | '/docs/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/docs' | '/docs/autocomplete-guide' | '/docs/background'
+  to: '/' | '/docs' | '/docs/autocomplete-guide'
   id:
     | '__root__'
     | '/'
     | '/docs'
     | '/docs/_docs-layout'
     | '/docs/_docs-layout/autocomplete-guide'
-    | '/docs/_docs-layout/background'
     | '/docs/_docs-layout/'
   fileRoutesById: FileRoutesById
 }
@@ -222,16 +197,11 @@ export const routeTree = rootRoute
       "parent": "/docs",
       "children": [
         "/docs/_docs-layout/autocomplete-guide",
-        "/docs/_docs-layout/background",
         "/docs/_docs-layout/"
       ]
     },
     "/docs/_docs-layout/autocomplete-guide": {
       "filePath": "docs/_docs-layout/autocomplete-guide.tsx",
-      "parent": "/docs/_docs-layout"
-    },
-    "/docs/_docs-layout/background": {
-      "filePath": "docs/_docs-layout/background.tsx",
       "parent": "/docs/_docs-layout"
     },
     "/docs/_docs-layout/": {

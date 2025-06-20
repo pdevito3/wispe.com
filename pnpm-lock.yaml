@@ -54,8 +54,8 @@ importers:
         specifier: ^1.114.3
         version: 1.120.11(@tanstack/react-router@1.120.11(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(tsx@4.19.4))
       '@wispe/wispe-react':
-        specifier: ^0.0.4
-        version: 0.0.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: ^0.0.5
+        version: 0.0.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1238,8 +1238,8 @@ packages:
   '@vitest/utils@3.1.4':
     resolution: {integrity: sha512-yriMuO1cfFhmiGc8ataN51+9ooHRuURdfAZfwFd3usWynjzpLslZdYnRegTv32qdgtJTsj15FoeZe2g15fY1gg==}
 
-  '@wispe/wispe-react@0.0.4':
-    resolution: {integrity: sha512-jWzjLZ9tLfifpZGuYEMfu7OhsoD0gNuOUqfka6lN+qNHRYbgEbMEJWlZnqrzumiM8gv8hP4ue9ktDNGP5hzx6g==}
+  '@wispe/wispe-react@0.0.5':
+    resolution: {integrity: sha512-e8KTrJBb84SZohtSrdK6eIVYplibrUgoCUZsEkRlJLL6znm6yTgBkuGn2N+hsAnRx8OS5gD/CcyFTeuSyMpvug==}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
@@ -3490,7 +3490,7 @@ snapshots:
       loupe: 3.1.3
       tinyrainbow: 2.0.0
 
-  '@wispe/wispe-react@0.0.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@wispe/wispe-react@0.0.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)

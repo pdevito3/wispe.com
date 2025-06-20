@@ -95,9 +95,9 @@ export function ControlledByIdExample() {
           <div className="space-y-3 mt-3">
             <p className="font-bold text-sm">
               Selected Value: {getSelectedValue()}
-              <span className="mt-2 text-sm text-slate-100">
-                {getSelectedItem()?.label}
-              </span>
+            </p>
+            <p className="font-bold text-sm">
+              Selected Item Label: {getSelectedItem()?.label}
             </p>
           </div>
         ) : (

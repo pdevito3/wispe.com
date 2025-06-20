@@ -60,7 +60,7 @@ export function Infinite() {
     [data?.pages]
   );
 
-  const parentRef = useRef<HTMLUListElement | null>(null);
+  const parentRef = useRef<HTMLElement | null>(null);
 
   const rowVirtualizer = useVirtualizer({
     count: hasNextPage ? allUsers.length + 1 : allUsers.length,
@@ -125,7 +125,7 @@ export function Infinite() {
       // return allUsers so hook's internal list stays in sync
       return allUsers;
     },
-    listboxRef: parentRef,
+    // listboxRef: parentRef,
   });
   return (
     <div className="relative max-w-md">

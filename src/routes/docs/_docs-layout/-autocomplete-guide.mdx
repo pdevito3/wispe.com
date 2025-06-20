@@ -1,4 +1,5 @@
 import { CodeBlock, CodePreviewTabs, InstallTabs } from '@/components/code-block'
+import { DevelopmentBanner } from '@/components/development-banner';
 import StandardExampleTsx from "@/components/examples/standard.tsx?raw";
 import {StandardExample} from "@/components/examples/standard";
 
@@ -53,6 +54,8 @@ import {CustomEntryExample} from "@/components/examples/custom-entry";
 
 
 # Autocomplete Guide
+
+<DevelopmentBanner />
 
 ## Installation
 Start by installing the Wispe package using your preferred package manager:
@@ -399,3 +402,67 @@ improve performance when dealing with large datasets.
 <div className="py-3">
   <CodePreviewTabs code={InfiniteTsx} preview={<Infinite />} />
 </div>
+
+## Data Attributes
+### Root
+`useAutocompleteRoot.getRootProps`
+- `data-combobox`: `true` — marks the outer combobox container  
+- `data-expanded`: `true` / `false` — whether the listbox is currently open  
+- `data-focused`: `true` — when the input (or any part) has focus  
+- `data-mode`: `"single"` / `"multiple"` — the selection mode  
+- `data-has-selected`: `"true"` — if there is at least one selected item  
+- `data-has-value`: `"true"` — if the input's value is non-empty  
+
+### Label
+`useLabel.getLabelProps`
+- `data-label`: `true` — marks the `<label>` element for styling or testing  
+
+### Input
+`useInput.getInputProps`
+- `data-input`: `true` — flags the text `<input>`  
+- `data-value`: _string_ — the current text in the input  
+- `data-has-value`: `"true"` — when the input isn't empty  
+- `data-autocomplete`: `"list"` — ARIA autocomplete mode  
+
+### Clear Button
+`useClearButton.getClearProps`
+- `data-clear-button`: `true` — marks the clear-text button  
+- `data-disabled`: `"true"` — when there's nothing to clear (button disabled)  
+
+### Disclosure Button
+`useDisclosure.getDisclosureProps`
+- `data-disclosure-button`: `true` — marks the toggle-open/close button  
+- `data-state`: `"open"` / `"closed"` — reflects whether the menu is open  
+
+### Listbox
+`useListbox.getListProps`
+- `data-listbox`: `true` — flags the options container  
+- `data-state`: `"open"` / `"closed"` — same as the root's `data-expanded`  
+- `data-has-groups`: `"true"` — if items are grouped  
+- `data-empty`: `"true"` — if there are zero items  
+- `data-size`: _number_ — total count of flattened items  
+
+### Option Items
+`useOption.getItemProps`
+- **List items (non-action):**  
+  - `data-active`: `"true"` — if this item is currently highlighted  
+  - `data-selected`: `"true"` — if it's chosen/checked  
+  - `data-index`: _number_ — position within the flattened list  
+  - `data-custom`: `"true"` — if it's the “custom value” entry  
+  - `data-disabled`: `"true"` — if it's not selectable  
+- **Action items:**  
+  - `data-action-item`: `true` — marks it as a special “action” entry  
+
+### Groups
+- **Group container** (`<ul role="group">`, via `useGroup.getGroupProps`):  
+  - `data-group`: `true` — marks this nested list  
+  - `data-group-key`: _string_ — the group's key value  
+  - `data-group-level`: _string_ — nesting level (e.g. `"0"`, `"1"`)  
+  - `data-has-subgroups`: `"true"` — if it contains further sub-groups  
+- **Group label** (`<span>`, via `useGroup.getGroupLabelProps`):  
+  - `data-group-label`: `true` — flags the visible heading  
+  - `data-group-key`: _string_ — repeats the group's key  
+
+### Tabs 
+`useTabs.getTabListProps`
+- `data-tablist`: `true` — marks the `<div role="tablist">` container  

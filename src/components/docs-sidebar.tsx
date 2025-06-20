@@ -24,10 +24,6 @@ const data = {
           url: "/docs",
         },
         {
-          title: "Background",
-          url: "/docs/background",
-        },
-        {
           title: "Autocomplete Guide",
           url: "/docs/autocomplete-guide",
         },
