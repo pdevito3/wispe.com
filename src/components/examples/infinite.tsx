@@ -160,7 +160,7 @@ export function Infinite() {
         {isOpen && (
           <ul
             {...getListProps()}
-            ref={parentRef}
+            // ref={parentRef}
             className="absolute z-10 w-full mt-1 overflow-auto bg-slate-700 border rounded-md shadow-lg h-80"
           >
             {isLoading ? (

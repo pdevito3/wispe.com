@@ -15,7 +15,6 @@ export function DisabledInput() {
     getClearProps,
     hasSelectedItem,
     isOpen,
-    getSelectedItem,
     getIsDisabled,
   } = useAutoComplete<Fruit>({
     items: fruits,
