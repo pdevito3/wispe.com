@@ -1,3 +1,5 @@
+"use client";
+
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Actions } from "@/components/examples/actions";
