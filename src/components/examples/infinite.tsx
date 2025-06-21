@@ -1,5 +1,3 @@
-"use client";
-
 import type { User } from "@/datasets/users";
 import { Check, XIcon } from "@/svgs";
 import { cn } from "@/utils";
