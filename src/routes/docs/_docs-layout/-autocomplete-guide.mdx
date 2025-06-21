@@ -252,7 +252,7 @@ You can also use the `getIsDisabled` method to check if the input is disabled, w
 be useful for conditionally rendering UI elements based on the disabled state.
 
 <div className="py-3">
-  <CodePreviewTabs code={DisabledItemTsx} preview={<DisabledItem />} />
+  <CodePreviewTabs code={DisabledInputTsx} preview={<DisabledInput />} />
 </div>
 
 ### Disabled Items
@@ -260,10 +260,10 @@ To disable specific items in the list, you can use the `isItemDisabled` option w
 This option takes a function that receives an item and returns a boolean indicating whether the item should be disabled.
 This can be any condition you want, such as checking a property of the item or its value.
 
-
 <div className="py-3">
-  <CodePreviewTabs code={DisabledInputTsx} preview={<DisabledInput />} />
+  <CodePreviewTabs code={DisabledItemTsx} preview={<DisabledItem />} />
 </div>
+
 
 ### Disclosure
 You can use the `getDisclosureProps` method to get the necessary props to render a disclosure component as a button that toggles the visibility of the autocomplete list.
