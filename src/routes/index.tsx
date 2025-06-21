@@ -32,7 +32,7 @@ export default function App() {
           <div className="flex items-center space-x-4 pl-24">
             <a
               href="/docs"
-              className="text-gray-300 bg-gray-700 px-4 py-2 rounded-xl shadow-gray-600 shadow-sm  font-medium hover:bg-gray-600 hover:text-gray-200 transition-colors"
+              className="text-gray-300 bg-gray-700 py-4 px-4 md:py-2 rounded-xl shadow-gray-600 shadow-sm  font-medium hover:bg-gray-600 hover:text-gray-200 transition-colors"
             >
               Documentation
             </a>
@@ -51,7 +51,7 @@ export default function App() {
                 width={200}
                 height={200}
                 viewBox="0 0 432 416"
-                className="w-5 h-5"
+                className="md:w-5 md:h-5 w-7 h-7"
               >
                 <path
                   fill="currentColor"
@@ -201,12 +201,64 @@ const tabs = [
     content: <Actions />,
   },
 ];
-
 function Tabs() {
-  const [activeTab, setActiveTab] = useState<string>(tabs[0].label);
+  const [activeTab, setActiveTab] = useState(tabs[0].label);
+
   return (
     <>
-      <nav className="flex space-x-2 border-b border-gray-700">
+      {/* Mobile: enhanced dropdown */}
+      <div className="md:hidden mb-6">
+        <div className="relative">
+          <select
+            value={activeTab}
+            onChange={(e) => setActiveTab(e.target.value)}
+            className="w-full bg-gradient-to-r from-gray-900 to-gray-800 text-white p-4 rounded-xl border border-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all duration-200 appearance-none cursor-pointer shadow-lg backdrop-blur-sm"
+          >
+            {tabs.map(({ label }) => (
+              <option
+                key={label}
+                value={label}
+                className="bg-gray-800 text-white py-2"
+              >
+                {label}
+              </option>
+            ))}
+          </select>
+          {/* Custom dropdown arrow */}
+          <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+            <svg
+              className="w-5 h-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </div>
+        </div>
+
+        {/* Visual indicator for active tab */}
+        <div className="mt-3 flex items-center justify-center">
+          <div className="flex items-center space-x-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+            {tabs.find((tab) => tab.label === activeTab)?.icon && (
+              <span className="text-emerald-400">
+                {tabs.find((tab) => tab.label === activeTab)?.icon}
+              </span>
+            )}
+            <span className="text-emerald-300 text-sm font-medium">
+              {activeTab}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop: scrollable tabs */}
+      <nav className="hidden md:flex space-x-2 border-b border-gray-700 whitespace-nowrap">
         {tabs.map(({ label, icon }) => (
           <button
             key={label}
@@ -229,6 +281,7 @@ function Tabs() {
         ))}
       </nav>
 
+      {/* Content */}
       <div className="mt-6 p-6 bg-gray-800 rounded-lg h-96 flex items-center justify-center">
         <div className="-mt-30 w-full max-w-sm">
           {tabs.find((tab) => tab.label === activeTab)?.content}
