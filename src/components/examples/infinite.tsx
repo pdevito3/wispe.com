@@ -130,7 +130,7 @@ export function Infinite() {
       // return allUsers so hook's internal list stays in sync
       return allUsers;
     },
-    // listboxRef: parentRef,
+    listboxRef: parentRef,
   });
   return (
     <div className="relative max-w-md">
@@ -166,7 +166,7 @@ export function Infinite() {
           <ul
             {...getListProps()}
             className="absolute z-10 w-full mt-1 overflow-auto border rounded-md shadow-lg bg-slate-700 h-80"
-            ref={parentRef}
+            // ref={parentRef}
           >
             {isLoading ? (
               <p className="p-4">Loading...</p>

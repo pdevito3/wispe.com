@@ -10,93 +10,117 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as DocsDocsLayoutRouteImport } from './routes/docs/_docs-layout'
+import { Route as DocsDocsLayoutIndexRouteImport } from './routes/docs/_docs-layout/index'
+import { Route as DocsDocsLayoutAutocompleteGuideRouteImport } from './routes/docs/_docs-layout/autocomplete-guide'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
-import { Route as DocsDocsLayoutImport } from './routes/docs/_docs-layout'
-import { Route as DocsDocsLayoutIndexImport } from './routes/docs/_docs-layout/index'
-import { Route as DocsDocsLayoutAutocompleteGuideImport } from './routes/docs/_docs-layout/autocomplete-guide'
+const DocsRouteImport = createFileRoute('/docs')()
 
-// Create Virtual Routes
-
-const DocsImport = createFileRoute('/docs')()
-
-// Create/Update Routes
-
-const DocsRoute = DocsImport.update({
+const DocsRoute = DocsRouteImport.update({
   id: '/docs',
   path: '/docs',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const DocsDocsLayoutRoute = DocsDocsLayoutImport.update({
+const DocsDocsLayoutRoute = DocsDocsLayoutRouteImport.update({
   id: '/_docs-layout',
   getParentRoute: () => DocsRoute,
 } as any)
-
-const DocsDocsLayoutIndexRoute = DocsDocsLayoutIndexImport.update({
+const DocsDocsLayoutIndexRoute = DocsDocsLayoutIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DocsDocsLayoutRoute,
 } as any)
-
 const DocsDocsLayoutAutocompleteGuideRoute =
-  DocsDocsLayoutAutocompleteGuideImport.update({
+  DocsDocsLayoutAutocompleteGuideRouteImport.update({
     id: '/autocomplete-guide',
     path: '/autocomplete-guide',
     getParentRoute: () => DocsDocsLayoutRoute,
   } as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/docs': typeof DocsDocsLayoutRouteWithChildren
+  '/docs/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
+  '/docs/': typeof DocsDocsLayoutIndexRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/docs': typeof DocsDocsLayoutIndexRoute
+  '/docs/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/docs': typeof DocsRouteWithChildren
+  '/docs/_docs-layout': typeof DocsDocsLayoutRouteWithChildren
+  '/docs/_docs-layout/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
+  '/docs/_docs-layout/': typeof DocsDocsLayoutIndexRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/docs' | '/docs/autocomplete-guide' | '/docs/'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/docs' | '/docs/autocomplete-guide'
+  id:
+    | '__root__'
+    | '/'
+    | '/docs'
+    | '/docs/_docs-layout'
+    | '/docs/_docs-layout/autocomplete-guide'
+    | '/docs/_docs-layout/'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  DocsRoute: typeof DocsRouteWithChildren
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
     '/docs': {
       id: '/docs'
       path: '/docs'
       fullPath: '/docs'
-      preLoaderRoute: typeof DocsImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof DocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/docs/_docs-layout': {
       id: '/docs/_docs-layout'
       path: '/docs'
       fullPath: '/docs'
-      preLoaderRoute: typeof DocsDocsLayoutImport
+      preLoaderRoute: typeof DocsDocsLayoutRouteImport
       parentRoute: typeof DocsRoute
-    }
-    '/docs/_docs-layout/autocomplete-guide': {
-      id: '/docs/_docs-layout/autocomplete-guide'
-      path: '/autocomplete-guide'
-      fullPath: '/docs/autocomplete-guide'
-      preLoaderRoute: typeof DocsDocsLayoutAutocompleteGuideImport
-      parentRoute: typeof DocsDocsLayoutImport
     }
     '/docs/_docs-layout/': {
       id: '/docs/_docs-layout/'
       path: '/'
       fullPath: '/docs/'
-      preLoaderRoute: typeof DocsDocsLayoutIndexImport
-      parentRoute: typeof DocsDocsLayoutImport
+      preLoaderRoute: typeof DocsDocsLayoutIndexRouteImport
+      parentRoute: typeof DocsDocsLayoutRoute
+    }
+    '/docs/_docs-layout/autocomplete-guide': {
+      id: '/docs/_docs-layout/autocomplete-guide'
+      path: '/autocomplete-guide'
+      fullPath: '/docs/autocomplete-guide'
+      preLoaderRoute: typeof DocsDocsLayoutAutocompleteGuideRouteImport
+      parentRoute: typeof DocsDocsLayoutRoute
     }
   }
 }
-
-// Create and export the route tree
 
 interface DocsDocsLayoutRouteChildren {
   DocsDocsLayoutAutocompleteGuideRoute: typeof DocsDocsLayoutAutocompleteGuideRoute
@@ -122,92 +146,10 @@ const DocsRouteChildren: DocsRouteChildren = {
 
 const DocsRouteWithChildren = DocsRoute._addFileChildren(DocsRouteChildren)
 
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/docs': typeof DocsDocsLayoutRouteWithChildren
-  '/docs/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
-  '/docs/': typeof DocsDocsLayoutIndexRoute
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/docs': typeof DocsDocsLayoutIndexRoute
-  '/docs/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/docs': typeof DocsRouteWithChildren
-  '/docs/_docs-layout': typeof DocsDocsLayoutRouteWithChildren
-  '/docs/_docs-layout/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
-  '/docs/_docs-layout/': typeof DocsDocsLayoutIndexRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/docs' | '/docs/autocomplete-guide' | '/docs/'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/docs' | '/docs/autocomplete-guide'
-  id:
-    | '__root__'
-    | '/'
-    | '/docs'
-    | '/docs/_docs-layout'
-    | '/docs/_docs-layout/autocomplete-guide'
-    | '/docs/_docs-layout/'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  DocsRoute: typeof DocsRouteWithChildren
-}
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DocsRoute: DocsRouteWithChildren,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/docs"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/docs": {
-      "filePath": "docs",
-      "children": [
-        "/docs/_docs-layout"
-      ]
-    },
-    "/docs/_docs-layout": {
-      "filePath": "docs/_docs-layout.tsx",
-      "parent": "/docs",
-      "children": [
-        "/docs/_docs-layout/autocomplete-guide",
-        "/docs/_docs-layout/"
-      ]
-    },
-    "/docs/_docs-layout/autocomplete-guide": {
-      "filePath": "docs/_docs-layout/autocomplete-guide.tsx",
-      "parent": "/docs/_docs-layout"
-    },
-    "/docs/_docs-layout/": {
-      "filePath": "docs/_docs-layout/index.tsx",
-      "parent": "/docs/_docs-layout"
-    }
-  }
-}
-ROUTE_MANIFEST_END */
