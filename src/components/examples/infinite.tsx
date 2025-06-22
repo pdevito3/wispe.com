@@ -73,7 +73,7 @@ export function Infinite() {
     return users;
   }, [data?.pages]);
 
-  const parentRef = useRef<HTMLElement | null>(null);
+  const parentRef = useRef<HTMLUListElement | null>(null);
 
   const rowVirtualizer = useVirtualizer({
     count: hasNextPage ? allUsers.length + 1 : allUsers.length,
@@ -173,8 +173,8 @@ export function Infinite() {
         {isOpen && (
           <ul
             {...getListProps()}
-            // ref={parentRef}
             className="absolute z-10 w-full mt-1 overflow-auto bg-slate-700 border rounded-md shadow-lg h-80"
+            ref={parentRef}
           >
             {isLoading ? (
               <p className="p-4">Loading...</p>
