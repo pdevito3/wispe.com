@@ -18,20 +18,25 @@ async function fetchUserPage(
   offset = 0,
   searchTerm = ""
 ): Promise<{ rows: User[]; nextOffset: number }> {
-  let filtered = mockUsers;
-  if (searchTerm) {
-    const term = searchTerm.toLowerCase();
-    filtered = filtered.filter(
-      (u) =>
-        u.name.toLowerCase().includes(term) ||
-        u.email.toLowerCase().includes(term)
-    );
+  try {
+    let filtered = mockUsers;
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter(
+        (u) =>
+          u.name.toLowerCase().includes(term) ||
+          u.email.toLowerCase().includes(term)
+      );
+    }
+    const start = offset * limit;
+    const rows = filtered.slice(start, start + limit);
+    // simulate network latency
+    await new Promise((r) => setTimeout(r, 500));
+    return { rows, nextOffset: offset + 1 };
+  } catch (error) {
+    console.error('Error in fetchUserPage:', error);
+    throw error;
   }
-  const start = offset * limit;
-  const rows = filtered.slice(start, start + limit);
-  // simulate network latency
-  await new Promise((r) => setTimeout(r, 500));
-  return { rows, nextOffset: offset + 1 };
 }
 
 export function Infinite() {
@@ -49,16 +54,24 @@ export function Infinite() {
     isError,
   } = useInfiniteQuery({
     queryKey: ["users", filter],
-    queryFn: ({ pageParam }) => fetchUserPage(20, pageParam as number, filter),
+    queryFn: ({ pageParam = 0 }) => {
+      console.log('Fetching page:', pageParam, 'filter:', filter);
+      return fetchUserPage(20, pageParam as number, filter);
+    },
     initialPageParam: 0,
-    getNextPageParam: (last) =>
-      last.rows.length === 20 ? last.nextOffset : undefined,
+    getNextPageParam: (lastPage, pages) => {
+      console.log('getNextPageParam:', { lastPage, pagesCount: pages.length });
+      return lastPage.rows.length === 20 ? lastPage.nextOffset : undefined;
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: 3,
   });
 
-  const allUsers = useMemo(
-    () => data?.pages.flatMap((d) => d.rows) ?? [],
-    [data?.pages]
-  );
+  const allUsers = useMemo(() => {
+    const users = data?.pages.flatMap((d) => d.rows) ?? [];
+    console.log('allUsers computed:', users.length);
+    return users;
+  }, [data?.pages]);
 
   const parentRef = useRef<HTMLElement | null>(null);
 
