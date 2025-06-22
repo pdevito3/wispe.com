@@ -34,7 +34,6 @@ async function fetchUserPage(
     await new Promise((r) => setTimeout(r, 500));
     return { rows, nextOffset: offset + 1 };
   } catch (error) {
-    console.error('Error in fetchUserPage:', error);
     throw error;
   }
 }
@@ -55,12 +54,10 @@ export function Infinite() {
   } = useInfiniteQuery({
     queryKey: ["users", filter],
     queryFn: ({ pageParam = 0 }) => {
-      console.log('Fetching page:', pageParam, 'filter:', filter);
       return fetchUserPage(20, pageParam as number, filter);
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => {
-      console.log('getNextPageParam:', { lastPage, pagesCount: pages.length });
       return lastPage.rows.length === 20 ? lastPage.nextOffset : undefined;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -69,7 +66,6 @@ export function Infinite() {
 
   const allUsers = useMemo(() => {
     const users = data?.pages.flatMap((d) => d.rows) ?? [];
-    console.log('allUsers computed:', users.length);
     return users;
   }, [data?.pages]);
 
