@@ -18,24 +18,20 @@ async function fetchUserPage(
   offset = 0,
   searchTerm = ""
 ): Promise<{ rows: User[]; nextOffset: number }> {
-  try {
-    let filtered = mockUsers;
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
-      filtered = filtered.filter(
-        (u) =>
-          u.name.toLowerCase().includes(term) ||
-          u.email.toLowerCase().includes(term)
-      );
-    }
-    const start = offset * limit;
-    const rows = filtered.slice(start, start + limit);
-    // simulate network latency
-    await new Promise((r) => setTimeout(r, 500));
-    return { rows, nextOffset: offset + 1 };
-  } catch (error) {
-    throw error;
+  let filtered = mockUsers;
+  if (searchTerm) {
+    const term = searchTerm.toLowerCase();
+    filtered = filtered.filter(
+      (u) =>
+        u.name.toLowerCase().includes(term) ||
+        u.email.toLowerCase().includes(term)
+    );
   }
+  const start = offset * limit;
+  const rows = filtered.slice(start, start + limit);
+  // simulate network latency
+  await new Promise((r) => setTimeout(r, 500));
+  return { rows, nextOffset: offset + 1 };
 }
 
 export function Infinite() {
@@ -153,7 +149,7 @@ export function Infinite() {
           >
             <span className="sr-only">Loading…</span>
             <div
-              className="w-5 h-5 border-2 border-slate-300 rounded-full border-t-emerald-500 animate-spin"
+              className="w-5 h-5 border-2 rounded-full border-slate-300 border-t-emerald-500 animate-spin"
               aria-hidden="true"
             />
           </div>
@@ -161,7 +157,7 @@ export function Infinite() {
           <button
             {...getClearProps()}
             type="button"
-            className="absolute text-slate-400 -translate-y-1/2 right-3 top-1/2 hover:text-slate-600 focus:outline-sky-600"
+            className="absolute -translate-y-1/2 text-slate-400 right-3 top-1/2 hover:text-slate-600 focus:outline-sky-600"
           >
             <XIcon />
           </button>
@@ -169,7 +165,7 @@ export function Infinite() {
         {isOpen && (
           <ul
             {...getListProps()}
-            className="absolute z-10 w-full mt-1 overflow-auto bg-slate-700 border rounded-md shadow-lg h-80"
+            className="absolute z-10 w-full mt-1 overflow-auto border rounded-md shadow-lg bg-slate-700 h-80"
             ref={parentRef}
           >
             {isLoading ? (
