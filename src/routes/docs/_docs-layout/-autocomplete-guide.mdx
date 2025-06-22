@@ -465,4 +465,22 @@ improve performance when dealing with large datasets.
 
 ### Tabs 
 `useTabs.getTabListProps`
-- `data-tablist`: `true` — marks the `<div role="tablist">` container  
+- `data-tablist`: `true` — marks the `<div role="tablist">` container
+
+## Keyboard Navigation
+The autocomplete component supports comprehensive keyboard navigation for accessibility:
+
+### Navigation Keys
+- **Arrow Down** (`↓`): Opens the listbox (if closed) or moves to the next item
+- **Arrow Up** (`↑`): Opens the listbox (if closed) or moves to the previous item  
+- **Arrow Right** (`→`): Moves to the next tab (when tabs are present)
+- **Arrow Left** (`←`): Moves to the previous tab (when tabs are present)
+- **Enter**: Selects the currently highlighted item or triggers an action
+- **Escape**: Closes the listbox and clears the active item
+- **Tab**: Closes the listbox and moves focus to the next focusable element
+
+### Behavior Notes
+- Navigation wraps around (first ↔ last item)
+- Disabled items are skipped during navigation
+- Keyboard navigation automatically scrolls items into view
+- Tab navigation is only available when tabs are configured  
