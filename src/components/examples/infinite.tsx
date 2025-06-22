@@ -53,7 +53,7 @@ export function Infinite() {
       return fetchUserPage(20, pageParam as number, filter);
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => {
+    getNextPageParam: (lastPage) => {
       return lastPage.rows.length === 20 ? lastPage.nextOffset : undefined;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
