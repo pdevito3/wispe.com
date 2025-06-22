@@ -190,7 +190,7 @@ export function Infinite() {
                     <p
                       key={key}
                       style={style}
-                      className="flex items-center justify-center py-2 mt-3 border-t border-slate-200 bg-slate-700"
+                      className="flex items-center justify-center py-2 border-t border-slate-200 bg-slate-700"
                     >
                       {hasNextPage ? "Loading more…" : "End of users"}
                     </p>
