@@ -222,7 +222,7 @@ export function CodePreviewTabs({
         {activeTab === 0 ? (
           // PREVIEW TAB: render the React node inside a little padded container
           <div className="p-4 bg-slate-800 rounded-b-xl h-112 overflow-auto">
-            <div className="max-w-md">{preview}</div>
+            <div className="max-w-xs sm:max-w-sm md:max-w-md">{preview}</div>
           </div>
         ) : (
           // CODE TAB: feed the raw source into your existing <CodeBlock>
