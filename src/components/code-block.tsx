@@ -135,10 +135,10 @@ export function TabbedCodeBlock({
 
 export function InstallTabs() {
   const installTabs = [
-    { label: "npm", language: "bash", code: "npm install @wispe/autocomplete" },
-    { label: "yarn", language: "bash", code: "yarn add @wispe/autocomplete" },
-    { label: "pnpm", language: "bash", code: "pnpm add @wispe/autocomplete" },
-    { label: "bun", language: "bash", code: "bun add @wispe/autocomplete" },
+    { label: "npm", language: "bash", code: "npm install @wispe/wispe-react" },
+    { label: "yarn", language: "bash", code: "yarn add @wispe/wispe-react" },
+    { label: "pnpm", language: "bash", code: "pnpm add @wispe/wispe-react" },
+    { label: "bun", language: "bash", code: "bun add @wispe/wispe-react" },
   ];
 
   return <TabbedCodeBlock tabs={installTabs} />;
