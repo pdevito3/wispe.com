@@ -1,0 +1,346 @@
+import { CodeBlock, CodePreviewTabs, InstallTabs } from '@/components/code-block'
+import { DevelopmentBanner } from '@/components/development-banner';
+import DropdownStandardTsx from "@/components/examples/dropdown-standard.tsx?raw";
+import {DropdownStandardExample} from "@/components/examples/dropdown-standard";
+
+import DropdownDisabledTsx from "@/components/examples/dropdown-disabled.tsx?raw";
+import {DropdownDisabledExample} from "@/components/examples/dropdown-disabled";
+
+import DropdownActionsTsx from "@/components/examples/dropdown-actions.tsx?raw";
+import {DropdownActionsExample} from "@/components/examples/dropdown-actions";
+
+import DropdownGroupingTsx from "@/components/examples/dropdown-grouping.tsx?raw";
+import {DropdownGroupingExample} from "@/components/examples/dropdown-grouping";
+
+import DropdownMultiselectTsx from "@/components/examples/dropdown-multiselect.tsx?raw";
+import {DropdownMultiselectExample} from "@/components/examples/dropdown-multiselect";
+
+import DropdownDisabledItemsTsx from "@/components/examples/dropdown-disabled-items.tsx?raw";
+import {DropdownDisabledItemsExample} from "@/components/examples/dropdown-disabled-items";
+
+import DropdownLinksTsx from "@/components/examples/dropdown-links.tsx?raw";
+import {DropdownLinksExample} from "@/components/examples/dropdown-links";
+
+import DropdownTabsTsx from "@/components/examples/dropdown-tabs.tsx?raw";
+import {DropdownTabsExample} from "@/components/examples/dropdown-tabs";
+
+# Dropdown Guide
+
+<DevelopmentBanner />
+
+## Installation
+Start by installing the Wispe package using your preferred package manager:
+
+{
+<div className="space-y-3 pt-3">
+<InstallTabs/>
+</div>
+}
+
+## How It Works
+The Wispe Dropdown is built with a core hook that takes in all the information it needs,
+and exposes properties and methods that can be composed into a component that
+suits your specific needs. This allows you to create a highly customizable dropdown component
+that can be tailored to your application's requirements.
+
+Specifically, you will generally input at least:
+
+- `items` (Required): an array of items to display in the dropdown.
+- `itemToString`: a function that converts an item to a string for display purposes (not needed for primitive lists).
+- `placeholder`: placeholder text to show when no item is selected.
+
+and you will get out at least:
+
+- `getRootProps`: applies the necessary props to the root element of the dropdown component.
+- `getLabelProps`: applies the necessary props to the label element.
+- `getTriggerProps`: applies the necessary props to the trigger button element.
+- `getListProps`: applies the necessary props to the list element.
+- `getItemProps`: applies the necessary props to each item in the list.
+- `getItemState`: gets the state of each item in the list, such as whether it is selected or focused.
+- `getItems`: returns the list of items to display.
+- `isOpen`: indicates whether the dropdown list is currently open.
+- `getTriggerText`: returns the display text for the trigger button.
+
+For example:
+<div className="py-3"/>
+```tsx
+import { useDropdown } from "@wispe/wispe-react";
+
+export interface User {
+  id: number;
+  name: string;
+}
+
+export const users: User[] = [
+  { id: 1, name: "John Doe" },
+  { id: 2, name: "Jane Smith" },
+  { id: 3, name: "Bob Johnson" },
+  { id: 4, name: "Alice Brown" },
+  { id: 5, name: "Charlie Wilson" },
+];
+
+export function BasicDropdown() {
+  const {
+    getRootProps,
+    getLabelProps,
+    getTriggerProps,
+    getListProps,
+    getItemProps,
+    getItemState,
+    getItems,
+    isOpen,
+    getSelectedItem,
+    getTriggerText,
+  } = useDropdown({
+    items: users,
+    itemToString: (u) => u.name,
+    placeholder: "Select a user...",
+  });
+
+  return (
+    <>
+      <label {...getLabelProps()}>Choose user</label>
+      <div {...getRootProps()}>
+        <button {...getTriggerProps()}>
+          {getTriggerText()}
+        </button>
+
+        {isOpen && (
+          <ul {...getListProps()}>
+            {getItems().map((user) => (
+              <li key={user.id} {...getItemProps(user)}>
+                <span>
+                  {user.name} {getItemState(user).isSelected && <span>✓</span>}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </>
+  );
+}
+```
+
+<div className="py-3"/>
+Here is a basic example of how to use the `useDropdown` hook to create a dropdown component:
+<div className="py-3">
+  <CodePreviewTabs code={DropdownStandardTsx} preview={<DropdownStandardExample />} />
+</div>
+
+## Data
+As with Tanstack Table, the data array that you pass to the dropdown instance MUST have a "stable" reference in order to prevent bugs that cause infinite re-renders.
+
+This will frequently mean `React.useState`, `React.useMemo`, or similar to ensure that the data has a stable reference.
+
+<div className="py-3"/>
+```tsx
+const fallbackData = []
+
+export default function MyComponent() {
+  //✅ GOOD: This will not cause an infinite loop of re-renders because `users` is a stable reference
+  const users = useMemo(() => [
+    // ...
+  ], []);
+
+  const {
+    // ...
+    isOpen,
+  } = useDropdown({
+    items: users,
+    itemToString: (u) => u.name,
+    placeholder: "Select a user...",
+  });
+
+  //✅ GOOD: This will not cause an infinite loop of re-renders because `data` is a stable reference
+  const [data, setData] = useState(() => [
+    // ...
+  ]);
+
+  const {
+    // ...
+    isOpen,
+  } = useDropdown({
+    items: data,
+    itemToString: (d) => d.name,
+    placeholder: "Select an item...",
+  });
+
+  return <div>...</div>;
+}
+```
+
+<div className="py-3"/>
+
+`React.useState` and `React.useMemo` are not the only ways to give your data a stable reference. You can also define your 
+data outside of the component or use a 3rd party state management library like Redux, Zustand, or TanStack Query.
+
+The main thing to avoid is defining the data array inside the same scope as the `useDropdown` call. That will 
+cause the data array to be redefined on every render, which will cause an infinite loop of re-renders.
+
+<div className="py-3"/>
+```tsx
+export default function MyComponent() {
+  //😵 BAD: This will cause an infinite loop of re-renders because `data` is redefined as a new array on every render!
+  const data = [
+    // ...
+  ];
+
+  const {
+    // ...
+    isOpen,
+  } = useDropdown({
+    items: data ?? [], //❌ Also bad because the fallback array is re-created on every render
+    itemToString: (d) => d.name,
+    placeholder: "Select an item...",
+  });
+
+  return <div>...</div>;
+}
+```
+
+## Features
+
+### Disabled Dropdown
+To disable the dropdown, you can pass a `disabled` property in the `state` object when calling the 
+`useDropdown` hook. This will disable the trigger button and prevent any interaction with it.
+
+You can also use the `getIsDisabled` method to check if the dropdown is disabled, which can 
+be useful for conditionally rendering UI elements based on the disabled state.
+
+<div className="py-3">
+  <CodePreviewTabs code={DropdownDisabledTsx} preview={<DropdownDisabledExample />} />
+</div>
+
+### Disabled Items
+To disable specific items in the list, you can use the `isItemDisabled` option when calling the `useDropdown` hook.
+This option takes a function that receives an item and returns a boolean indicating whether the item should be disabled.
+This can be any condition you want, such as checking a property of the item or its value.
+
+<div className="py-3">
+  <CodePreviewTabs code={DropdownDisabledItemsTsx} preview={<DropdownDisabledItemsExample />} />
+</div>
+
+### Actions
+You can pass an `actions` object to the `useDropdown` hook to define custom actions that can be performed
+from the dropdown list. This can be useful for adding custom functionality like opening a modal to add a new item, 
+or maybe adding a clear option.
+
+An action is an object that contains a `label` to display in the dropdown, a placement of `top` or `bottom` to 
+determine where it should be rendered in the list, and an `onAction` callback that is called when the action is triggered.
+
+<div className="py-3">
+  <CodePreviewTabs code={DropdownActionsTsx} preview={<DropdownActionsExample />} />
+</div>
+
+### Groupings
+You can use `state.grouping` to pass a list of groupings (`{ label: string, key: keyof T }[]`) to the `useDropdown` hook.
+The `key` is the property of the item that you want to group by, and the `label` is the label to display for the group.
+
+The `getGroupProps`, `getGroupLabelProps`, and `getItems` methods are used to retrieve the groups and their items to 
+display in whatever way makes sense for you.
+
+<div className="py-3">
+  <CodePreviewTabs code={DropdownGroupingTsx} preview={<DropdownGroupingExample />} />
+</div>
+
+### Multiselect
+You can enable multi-select mode by passing a `mode` of `multiple` to the `useDropdown` hook. This will tell the dropdown hook to
+allow multiple items to be selected at once. The dropdown is smart enough to then know that methods like `getSelectedItem` should return 
+an array of the currently selected items.
+
+<div className="py-3">
+  <CodePreviewTabs code={DropdownMultiselectTsx} preview={<DropdownMultiselectExample />} />
+</div>
+
+### Tabs
+Tabs can be used to filter items in the list based on a given callback. To use tabs, you can pass a `tabs` array 
+to the `useDropdown` hook, which contains objects with a `label`, a `filter` function, and a `key`. The filter
+takes in an item of whatever type you are using, and returns a boolean indicating whether the item should 
+be included in the tab.
+
+Note that as with the dropdown items, the tabs should have some kind of stable data source as described above.
+
+<div className="py-3">
+  <CodePreviewTabs code={DropdownTabsTsx} preview={<DropdownTabsExample />} />
+</div>
+
+### Link Items
+
+You can use the `getItemLinkProps` method to get the necessary props to render a link for each item in the list.
+This method will return an object with the necessary props to render a link, such as `to`, `href`, `download`, or `ping`, depending on the target of the link.
+You can also use the `getItemLink` method to get the link for each item in the list, which will return an object with the necessary props to render a link.
+You can then use these props to render a link for each item in the list, such as a `Link` component from `tanstack/router` or `react-router-dom` for internal 
+routes or an just `a` tag for external links.
+
+<div className="py-3">
+  <CodePreviewTabs code={DropdownLinksTsx} preview={<DropdownLinksExample />} />
+</div>
+
+## Data Attributes
+### Root
+`useDropdownRoot.getRootProps`
+- `data-combobox`: `true` — marks the outer dropdown container  
+- `data-expanded`: `true` / `false` — whether the listbox is currently open  
+- `data-focused`: `true` — when the trigger button has focus  
+- `data-mode`: `"single"` / `"multiple"` — the selection mode  
+- `data-has-selected`: `"true"` — if there is at least one selected item  
+
+### Label
+`useLabel.getLabelProps`
+- `data-label`: `true` — marks the `<label>` element for styling or testing  
+
+### Trigger Button
+`useTrigger.getTriggerProps`
+- `data-trigger`: `true` — flags the trigger `<button>`  
+- `data-state`: `"open"` / `"closed"` — reflects whether the dropdown is open  
+- `data-disabled`: `"true"` — when the trigger is disabled  
+
+### Clear Button
+`useClearButton.getClearProps`
+- `data-clear-button`: `true` — marks the clear-selection button  
+- `data-disabled`: `"true"` — when there's nothing to clear (button disabled)  
+
+### Listbox
+`useListbox.getListProps`
+- `data-listbox`: `true` — flags the options container  
+- `data-state`: `"open"` / `"closed"` — same as the root's `data-expanded`  
+- `data-has-groups`: `"true"` — if items are grouped  
+- `data-empty`: `"true"` — if there are zero items  
+- `data-size`: _number_ — total count of flattened items  
+
+### Option Items
+`useOption.getItemProps`
+- **List items (non-action):**  
+  - `data-active`: `"true"` — if this item is currently highlighted  
+  - `data-selected`: `"true"` — if it's chosen/checked  
+  - `data-index`: _number_ — position within the flattened list  
+  - `data-disabled`: `"true"` — if it's not selectable  
+- **Action items:**  
+  - `data-action-item`: `true` — marks it as a special "action" entry  
+
+### Groups
+- **Group container** (`<ul role="group">`, via `useGroup.getGroupProps`):  
+  - `data-group`: `true` — marks this nested list  
+  - `data-group-key`: _string_ — the group's key value  
+  - `data-group-level`: _string_ — nesting level (e.g. `"0"`, `"1"`)  
+  - `data-has-subgroups`: `"true"` — if it contains further sub-groups  
+- **Group label** (`<span>`, via `useGroup.getGroupLabelProps`):  
+  - `data-group-label`: `true` — flags the visible heading  
+  - `data-group-key`: _string_ — repeats the group's key  
+
+## Keyboard Navigation
+The dropdown component supports comprehensive keyboard navigation for accessibility:
+
+### Navigation Keys
+- **Arrow Down** (`↓`): Opens the dropdown (if closed) or moves to the next item
+- **Arrow Up** (`↑`): Opens the dropdown (if closed) or moves to the previous item  
+- **Enter** / **Space**: Selects the currently highlighted item or triggers an action
+- **Escape**: Closes the dropdown and clears the active item
+- **Tab**: Closes the dropdown and moves focus to the next focusable element
+
+### Behavior Notes
+- Navigation wraps around (first ↔ last item)
+- Disabled items are skipped during navigation
+- Keyboard navigation automatically scrolls items into view
+- The trigger button can be focused and activated with Enter/Space

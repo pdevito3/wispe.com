@@ -27,6 +27,10 @@ const data = {
           title: "Autocomplete Guide",
           url: "/docs/autocomplete-guide",
         },
+        {
+          title: "Dropdown Guide",
+          url: "/docs/dropdown-guide",
+        },
       ],
     },
     // {

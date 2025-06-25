@@ -14,6 +14,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DocsDocsLayoutRouteImport } from './routes/docs/_docs-layout'
 import { Route as DocsDocsLayoutIndexRouteImport } from './routes/docs/_docs-layout/index'
+import { Route as DocsDocsLayoutDropdownGuideRouteImport } from './routes/docs/_docs-layout/dropdown-guide'
 import { Route as DocsDocsLayoutAutocompleteGuideRouteImport } from './routes/docs/_docs-layout/autocomplete-guide'
 
 const DocsRouteImport = createFileRoute('/docs')()
@@ -37,6 +38,12 @@ const DocsDocsLayoutIndexRoute = DocsDocsLayoutIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DocsDocsLayoutRoute,
 } as any)
+const DocsDocsLayoutDropdownGuideRoute =
+  DocsDocsLayoutDropdownGuideRouteImport.update({
+    id: '/dropdown-guide',
+    path: '/dropdown-guide',
+    getParentRoute: () => DocsDocsLayoutRoute,
+  } as any)
 const DocsDocsLayoutAutocompleteGuideRoute =
   DocsDocsLayoutAutocompleteGuideRouteImport.update({
     id: '/autocomplete-guide',
@@ -48,12 +55,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/docs': typeof DocsDocsLayoutRouteWithChildren
   '/docs/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
+  '/docs/dropdown-guide': typeof DocsDocsLayoutDropdownGuideRoute
   '/docs/': typeof DocsDocsLayoutIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/docs': typeof DocsDocsLayoutIndexRoute
   '/docs/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
+  '/docs/dropdown-guide': typeof DocsDocsLayoutDropdownGuideRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,19 +70,26 @@ export interface FileRoutesById {
   '/docs': typeof DocsRouteWithChildren
   '/docs/_docs-layout': typeof DocsDocsLayoutRouteWithChildren
   '/docs/_docs-layout/autocomplete-guide': typeof DocsDocsLayoutAutocompleteGuideRoute
+  '/docs/_docs-layout/dropdown-guide': typeof DocsDocsLayoutDropdownGuideRoute
   '/docs/_docs-layout/': typeof DocsDocsLayoutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/docs' | '/docs/autocomplete-guide' | '/docs/'
+  fullPaths:
+    | '/'
+    | '/docs'
+    | '/docs/autocomplete-guide'
+    | '/docs/dropdown-guide'
+    | '/docs/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/docs' | '/docs/autocomplete-guide'
+  to: '/' | '/docs' | '/docs/autocomplete-guide' | '/docs/dropdown-guide'
   id:
     | '__root__'
     | '/'
     | '/docs'
     | '/docs/_docs-layout'
     | '/docs/_docs-layout/autocomplete-guide'
+    | '/docs/_docs-layout/dropdown-guide'
     | '/docs/_docs-layout/'
   fileRoutesById: FileRoutesById
 }
@@ -112,6 +128,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsDocsLayoutIndexRouteImport
       parentRoute: typeof DocsDocsLayoutRoute
     }
+    '/docs/_docs-layout/dropdown-guide': {
+      id: '/docs/_docs-layout/dropdown-guide'
+      path: '/dropdown-guide'
+      fullPath: '/docs/dropdown-guide'
+      preLoaderRoute: typeof DocsDocsLayoutDropdownGuideRouteImport
+      parentRoute: typeof DocsDocsLayoutRoute
+    }
     '/docs/_docs-layout/autocomplete-guide': {
       id: '/docs/_docs-layout/autocomplete-guide'
       path: '/autocomplete-guide'
@@ -124,11 +147,13 @@ declare module '@tanstack/react-router' {
 
 interface DocsDocsLayoutRouteChildren {
   DocsDocsLayoutAutocompleteGuideRoute: typeof DocsDocsLayoutAutocompleteGuideRoute
+  DocsDocsLayoutDropdownGuideRoute: typeof DocsDocsLayoutDropdownGuideRoute
   DocsDocsLayoutIndexRoute: typeof DocsDocsLayoutIndexRoute
 }
 
 const DocsDocsLayoutRouteChildren: DocsDocsLayoutRouteChildren = {
   DocsDocsLayoutAutocompleteGuideRoute: DocsDocsLayoutAutocompleteGuideRoute,
+  DocsDocsLayoutDropdownGuideRoute: DocsDocsLayoutDropdownGuideRoute,
   DocsDocsLayoutIndexRoute: DocsDocsLayoutIndexRoute,
 }
 
