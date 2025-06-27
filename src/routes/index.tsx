@@ -15,24 +15,24 @@ export const Route = createFileRoute("/")({
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center pt-30 px-8 pb-36 antialiased">
-      <div className="max-w-4xl">
-        {/* Hero Section */}
-        <header className="flex items-center justify-between">
-          <div className="">
-            <div className="flex items-center space-x-3">
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center pt-8 md:pt-[120px] px-4 md:px-8 pb-16 md:pb-36 antialiased">
+      <div className="w-full max-w-4xl">
+        {/* Hero Section */}        
+        <header className="flex flex-col md:flex-row md:items-center md:justify-between space-y-6 md:space-y-0">
+          <div className="text-center md:text-left">
+            <div className="flex items-center justify-center md:justify-start space-x-3">
               <img src="/logo.svg" alt="Wispe Logo" className="h-8 w-8" />
-              <h1 className="text-4xl font-medium">Wispe</h1>
+              <h1 className="text-3xl md:text-4xl font-medium">Wispe</h1>
             </div>
-            <p className="pt-3 text-gray-300 max-w-md text-pretty">
+            <p className="pt-3 text-gray-300 max-w-md text-pretty mx-auto md:mx-0">
               A headless autocomplete for React with a Tanstack inspired API and
               rich interactions.
             </p>
           </div>
-          <div className="flex items-center space-x-4 pl-24">
+          <div className="flex items-center justify-center md:justify-end space-x-4 md:pl-8">
             <a
               href="/docs"
-              className="text-gray-300 bg-gray-700 py-4 px-4 md:py-2 rounded-xl shadow-gray-600 shadow-sm  font-medium hover:bg-gray-600 hover:text-gray-200 transition-colors"
+              className="text-gray-300 bg-gray-700 py-3 px-6 md:py-2 md:px-4 rounded-xl shadow-gray-600 shadow-sm font-medium hover:bg-gray-600 hover:text-gray-200 transition-colors"
             >
               Documentation
             </a>
